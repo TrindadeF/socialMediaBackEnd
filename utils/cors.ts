@@ -1,7 +1,7 @@
 import { CorsOptions } from 'cors'
 
 export const corsOptions: CorsOptions = {
-    origin: 'http://localhost:3000',
+    origin: process.env.URL,
 
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
 }
