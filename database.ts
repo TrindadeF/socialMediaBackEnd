@@ -6,3 +6,14 @@ export type Post = {
     createdAt: Date
     likes: number
 }
+
+export type User = {
+    name: string
+    age: number
+    profilePic: string
+    email: string
+    bornedAt: Date
+    gender: Gender
+}
+
+type Gender = 'M' | 'F' | 'NB' | 'NONE'
