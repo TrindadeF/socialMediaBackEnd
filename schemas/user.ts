@@ -17,4 +17,5 @@ export const userSchema = new Schema<User>({
             'please, use valid email ',
         ],
     },
+    password: { type: 'string', required: true },
 })

@@ -14,6 +14,7 @@ export type User = {
     email: string
     bornedAt: Date
     gender: Gender
+    password: string
 }
 
 type Gender = 'M' | 'F' | 'NB' | 'NONE'
