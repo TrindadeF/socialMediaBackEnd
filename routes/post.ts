@@ -9,3 +9,5 @@ router.get('/', getPosts)
 router.delete('/:id')
 router.post('/', validBody, creatPost)
 router.put('/:id', validBody)
+
+export default router

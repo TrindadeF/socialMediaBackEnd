@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { User } from '../../database'
 import { userModel } from '../../models/users'
 
-export const createUser = async (req: Request, res: Response) => {
+export const getUser = async (req: Request, res: Response) => {
     const user = req.body as User
     try {
         await userModel.create(user)

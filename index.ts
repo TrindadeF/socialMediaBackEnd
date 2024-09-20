@@ -8,7 +8,7 @@ import router from './routes'
 import mongoose from 'mongoose'
 
 const app = express()
-const MONGO_URI = process.env.MONGO_URI!
+const MONGO_URI = process.env.MONGO_URI
 
 mongoose.connect(MONGO_URI)
 

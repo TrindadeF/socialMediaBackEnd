@@ -3,24 +3,43 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({ path: '../.env' })
 
 export const AuthService = {
     login: async (email: string, password: string) => {
         const user = await userModel.findOne({ email })
-        if (!user) throw new Error('Usuario ou senha invalido')
-        const match = bcrypt.compare(password, user.password)
-        if (!match) throw new Error('Usuario ou senha invalida')
-        const securityKey = process.env.SECURITY_KEY
+        if (!user) throw new Error('Usuário ou senha inválido')
+
+        const match = await bcrypt.compare(password, user.password)
+        if (!match) throw new Error('Usuário ou senha inválida')
+
         const token = jwt.sign(
             { _id: user._id.toString(), name: user.name },
-            securityKey,
+            process.env.SECURITY_KEY,
             { expiresIn: '1h' }
         )
         return token
     },
 
-    //register: async (email: string, password: string): Promise<any> => {
-    //    return { email, password }
-    //},
+    register: async (email: string, password: string, name: string) => {
+        const existingUser = await userModel.findOne({ email })
+        if (existingUser) {
+            throw new Error('Usuário já existe com esse email')
+        }
+        const hashedPassword = await bcrypt.hash(password, 10)
+        const newUser = new userModel({
+            email,
+            password: hashedPassword,
+            name,
+        })
+        await newUser.save()
+
+        const token = jwt.sign(
+            { _id: newUser._id.toString(), name: newUser.name },
+            process.env.SECURITY_KEY as string,
+            { expiresIn: '1h' }
+        )
+
+        return token
+    },
 }
