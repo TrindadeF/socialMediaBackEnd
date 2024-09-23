@@ -24,7 +24,7 @@ export const AuthService = {
     register: async (email: string, password: string, name: string) => {
         const existingUser = await userModel.findOne({ email })
         if (existingUser) {
-            throw new Error('Usuário já existe com esse email')
+            throw new Error('Já existe um usuario com este email')
         }
         const hashedPassword = await bcrypt.hash(password, 10)
         const newUser = new userModel({
@@ -37,7 +37,7 @@ export const AuthService = {
         const token = jwt.sign(
             { _id: newUser._id.toString(), name: newUser.name },
             process.env.SECURITY_KEY as string,
-            { expiresIn: '1h' }
+            { expiresIn: '7d' }
         )
 
         return token
