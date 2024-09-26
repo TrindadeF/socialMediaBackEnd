@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { User } from '../database'
+import { User } from '../../database'
 
 export const authBody = (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body as User

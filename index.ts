@@ -15,8 +15,13 @@ mongoose.connect(MONGO_URI)
 app.use(cors(corsOptions))
 app.use(helmet())
 app.use(limiter)
+
+app.get('/test', (req, res) => {
+    res.send('test route working')
+})
+
+app.use('/', express.json(), router)
+
 app.listen(process.env.PORT, () =>
     console.log(`Running on port ${process.env.PORT}`)
 )
-
-app.use('/', express.json(), router)
