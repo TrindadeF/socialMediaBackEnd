@@ -4,8 +4,8 @@ import { User } from '../database'
 export const userSchema = new Schema<User>({
     name: { type: 'String', required: true },
     age: { type: 'Number', required: true },
-    profilePic: { type: 'String', required: true, default: 'default' },
-    gender: { type: 'String', required: true, enum: ['M', 'F', 'NB', 'NONE'] },
+    profilePic: { type: 'String', default: 'default' },
+    gender: { type: 'String', enum: ['M', 'F', 'NB', 'NONE'] },
     email: {
         type: 'String',
         required: true,

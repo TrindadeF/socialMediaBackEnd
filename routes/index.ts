@@ -4,8 +4,7 @@ import post from './post'
 
 const router = Router()
 
+router.use('/auth', auth)
 router.use('/post', post)
-router.use('/login', auth)
-router.use('/register', auth)
 
 export default router

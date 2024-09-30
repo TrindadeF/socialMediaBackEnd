@@ -7,9 +7,8 @@ import { updateUser } from '../controllers/users/updateUser'
 
 const router = Router()
 
-router.get('/login', getUser, authBody)
 router.post('/register', createUser)
-
+router.get('/login', getUser, authBody)
 router.get('/profile', authBody, getUser)
 router.put('/profile', authBody, updateUser)
 router.delete('/profile', authBody, deleteUser)
