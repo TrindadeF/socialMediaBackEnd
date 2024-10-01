@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { userModel } from '../../models/users'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export const getUser = async (req: Request, res: Response) => {
     const { email, password } = req.body
@@ -8,27 +9,23 @@ export const getUser = async (req: Request, res: Response) => {
     try {
         const user = await userModel.findOne({ email })
         if (!user) {
-            return res.status(401).json({ error: 'Email não encontrado' })
+            return res.status(401).json({ error: 'Usuário não encontrado' })
         }
 
-        console.log(`Senha fornecida: ${password}`)
-        console.log(`Senha armazenada: ${user.password}`)
-
-        const isPasswordValid = await bcrypt.compare(password, user.password)
-        console.log(`Senha válida: ${isPasswordValid}`)
-
-        if (!isPasswordValid) {
+        const passwordMatch = await bcrypt.compare(password, user.password)
+        if (!passwordMatch) {
             return res.status(401).json({ error: 'Senha incorreta' })
         }
 
-        return res.status(200).json({
-            message: 'Login bem-sucedido',
-            user: { id: user._id, name: user.name, email: user.email },
-        })
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            return res.status(400).json({ error: error.message })
-        }
-        return res.status(400).json({ error: 'Erro ao fazer login' })
+        const token = jwt.sign(
+            { id: user._id, email: user.email },
+            process.env.SECURITY_KEY,
+            { expiresIn: '7d' }
+        )
+        console.log('Token gerado:', token)
+
+        return res.status(200).json({ message: 'Login bem-sucedido', token })
+    } catch (error) {
+        return res.status(500).json({ error: 'Erro no servidor' })
     }
 }
