@@ -1,29 +1,35 @@
 import { Response, Request } from 'express'
-import { Post } from '../../database'
 import PostModel from '../../models/post'
 
 export const createPost = async (req: Request, res: Response) => {
-    const { content } = req.body as { content: string }
-    const userId = req.user?.id
-
-    if (!userId) {
-        return res.status(401).json({ error: 'Missing user ID' })
-    }
-
     try {
-        const newPost = await PostModel.create({
+        const { content } = req.body
+
+        if (!req.user || !req.user.id) {
+            console.log('Usuário não autenticado ou ID ausente')
+            return res
+                .status(401)
+                .json({ error: 'Usuário não autenticado ou ID ausente' })
+        }
+
+        if (!content) {
+            return res.status(400).json({ error: 'Conteúdo do post ausente' })
+        }
+
+        const post = await PostModel.create({
             content,
-            owner: userId,
+            owner: req.user.id,
             createdAt: new Date(),
             likes: 0,
         })
 
         return res
             .status(201)
-            .json({ message: 'Post created successfully', post: newPost })
+            .json({ message: 'Post criado com sucesso', post })
     } catch (error: any) {
+        console.error('Erro ao criar o post:', error)
         return res
-            .status(400)
-            .json({ error: error.message || 'Error creating post' })
+            .status(500)
+            .json({ error: error.message || 'Erro ao criar o post' })
     }
 }

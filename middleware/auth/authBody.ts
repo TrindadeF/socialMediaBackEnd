@@ -8,29 +8,14 @@ export const authBody = (req: Request, res: Response, next: NextFunction) => {
         return res.status(401).json({ error: 'Token não fornecido' })
     }
 
-    console.log('Token recebido:', token)
-
     try {
-        const decoded = jwt.verify(token, process.env.SECURITY_KEY)
+        const decoded = jwt.verify(
+            token,
+            process.env.SECURITY_KEY || 'defaultSecret'
+        )
         req.user = decoded as { id: string; email: string }
-        console.log('Token decodificado:', req.user)
         next()
-    } catch (error: any) {
-        console.error('Erro ao verificar o token:', error.message)
+    } catch (error) {
         return res.status(401).json({ error: 'Token inválido' })
     }
-}
-
-export const validateLoginFields = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    const { email, password } = req.body
-
-    if (!email || !password) {
-        return res.status(400).json({ error: 'Campos vazios' })
-    }
-
-    next()
 }
