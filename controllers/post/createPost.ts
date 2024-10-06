@@ -12,12 +12,18 @@ export const createPost = async (req: Request, res: Response) => {
                 .json({ error: 'Usuário não autenticado ou ID ausente' })
         }
 
-        if (!content) {
-            return res.status(400).json({ error: 'Conteúdo do post ausente' })
+        if (
+            !content ||
+            typeof content !== 'string' ||
+            content.trim().length === 0
+        ) {
+            return res
+                .status(400)
+                .json({ error: 'Conteúdo do post ausente ou inválido' })
         }
 
         const post = await PostModel.create({
-            content,
+            content: content.trim(),
             owner: req.user.id,
             createdAt: new Date(),
             likes: 0,

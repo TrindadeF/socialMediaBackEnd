@@ -10,7 +10,7 @@ const router = Router()
 
 router.post('/register', createUser)
 router.post('/login', getUser)
-router.get('/profile', authBody, getUserProfile)
+router.get('/profile/:id', authBody, getUserProfile)
 router.put('/profile', authBody, updateUser)
 router.delete('/profile/:id', deleteUser)
 
