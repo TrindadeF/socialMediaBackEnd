@@ -12,9 +12,10 @@ export type User = {
     age: number
     profilePic: string
     email: string
-    bornedAt: Date
     gender: Gender
     password: string
+    confirmpassword: string
+    description: string
 }
 
-type Gender = 'M' | 'F' | 'NB' | 'NONE'
+type Gender = 'M' | 'F' | 'NB' | 'BI' | 'TR' | 'HOM'

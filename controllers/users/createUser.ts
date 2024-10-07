@@ -20,6 +20,7 @@ export const createUser = async (req: Request, res: Response) => {
             gender,
             email,
             password: hashedPassword,
+            confirmpassword: hashedPassword,
         })
 
         return res

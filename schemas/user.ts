@@ -5,7 +5,7 @@ export const userSchema = new Schema<User>({
     name: { type: 'String', required: true },
     age: { type: 'Number', required: true },
     profilePic: { type: 'String', default: 'default' },
-    gender: { type: 'String', enum: ['M', 'F', 'NB', 'NONE'] },
+    gender: { type: 'String', enum: ['M', 'F', 'NB', 'BI', 'TR', 'HOM'] },
     email: {
         type: 'String',
         required: true,
@@ -18,4 +18,5 @@ export const userSchema = new Schema<User>({
         ],
     },
     password: { type: 'string', required: true },
+    confirmpassword: { type: 'string', required: true },
 })
