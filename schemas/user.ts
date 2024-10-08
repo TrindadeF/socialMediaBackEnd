@@ -19,4 +19,6 @@ export const userSchema = new Schema<User>({
     },
     password: { type: 'string', required: true },
     confirmpassword: { type: 'string', required: true },
+    nickName: { type: 'string' },
+    description: { type: 'string' },
 })

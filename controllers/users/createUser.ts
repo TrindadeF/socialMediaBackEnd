@@ -4,7 +4,8 @@ import { User } from '../../database'
 import bcrypt from 'bcrypt'
 
 export const createUser = async (req: Request, res: Response) => {
-    const { name, age, gender, email, password }: User = req.body
+    const { name, age, gender, email, password, description, nickName }: User =
+        req.body
 
     try {
         const existingUser = await userModel.findOne({ email })
@@ -21,6 +22,8 @@ export const createUser = async (req: Request, res: Response) => {
             email,
             password: hashedPassword,
             confirmpassword: hashedPassword,
+            description,
+            nickName,
         })
 
         return res

@@ -6,6 +6,10 @@ import { limiter } from './utils/limiter'
 import 'dotenv/config'
 import router from './routes'
 import mongoose from 'mongoose'
+import multer from 'multer'
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage })
 
 const app = express()
 const MONGO_URI = process.env.MONGO_URI
@@ -16,9 +20,7 @@ app.use(cors(corsOptions))
 app.use(helmet())
 app.use(limiter)
 
-app.get('/test', (req, res) => {
-    res.send('test route working')
-})
+app.use('/post', upload.single('image'), router)
 
 app.use('/', express.json(), router)
 

@@ -5,6 +5,7 @@ export type Post = {
     owner: ObjectId
     createdAt: Date
     likes: number
+    ownerName: string
 }
 
 export type User = {
@@ -16,6 +17,7 @@ export type User = {
     password: string
     confirmpassword: string
     description: string
+    nickName: string
 }
 
 type Gender = 'M' | 'F' | 'NB' | 'BI' | 'TR' | 'HOM'
