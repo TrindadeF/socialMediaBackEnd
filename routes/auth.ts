@@ -11,7 +11,7 @@ const router = Router()
 router.post('/register', createUser)
 router.post('/login', getUser)
 router.get('/profile', authBody, getUserProfile)
-router.put('/profile', authBody, updateUser)
+router.put('/profile/edit/:id', authBody, updateUser)
 router.delete('/profile/:id', deleteUser)
 
 export default router

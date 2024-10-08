@@ -20,14 +20,16 @@ export const getUser = async (req: Request, res: Response) => {
         const token = jwt.sign(
             { id: user._id, email: user.email },
             process.env.SECURITY_KEY || 'defaultSecret',
-            {
-                expiresIn: '3h',
-            }
+            { expiresIn: '3h' }
         )
 
         console.log('Token gerado:', token)
 
-        return res.status(200).json({ message: 'Login bem-sucedido', token })
+        return res.status(200).json({
+            message: 'Login bem-sucedido',
+            token,
+            userId: user._id,
+        })
     } catch (error) {
         return res.status(500).json({ error: 'Erro no servidor' })
     }
