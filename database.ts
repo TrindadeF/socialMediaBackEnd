@@ -18,6 +18,18 @@ export type User = {
     confirmpassword: string
     description: string
     nickName: string
+    stripeCustomerId: string
+    stripeSubscriptionId: string
+    stripeSubscriptionStatus: StripeSubscriptionStatus | null
 }
 
 type Gender = 'M' | 'F' | 'NB' | 'BI' | 'TR' | 'HOM'
+type StripeSubscriptionStatus =
+    | 'active'
+    | 'canceled'
+    | 'incomplete'
+    | 'incomplete_expired'
+    | 'past_due'
+    | 'paused'
+    | 'unpaid'
+    | 'trialing'

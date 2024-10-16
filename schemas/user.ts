@@ -21,4 +21,16 @@ export const userSchema = new Schema<User>({
     confirmpassword: { type: 'string', required: true },
     nickName: { type: 'string' },
     description: { type: 'string' },
+    stripeSubscriptionStatus: {
+        type: String,
+        enum: [
+            'active',
+            'canceled',
+            'incomplete',
+            'past_due',
+            'paused',
+            'incomplete_expired',
+        ],
+        default: null,
+    },
 })
