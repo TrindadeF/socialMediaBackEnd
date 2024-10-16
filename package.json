@@ -35,7 +35,15 @@
         "gridfs-stream": "^1.1.1",
         "helmet": "^7.1.0",
         "jsonwebtoken": "^9.0.2",
+<<<<<<< HEAD
         "mongoose": "^8.7.1",
+=======
+<<<<<<< HEAD
+        "mongoose": "^8.7.1",
+=======
+        "mongoose": "^8.7.0",
+>>>>>>> 8e3d2448118fd719f9ab1a2714ba7ea82e26ab88
+>>>>>>> 6c0a4cdf4e461cd42a31474aef19d9ced8097464
         "multer": "^1.4.4",
         "multer-gridfs": "^0.0.1",
         "multer-gridfs-storage": "^5.0.2",
