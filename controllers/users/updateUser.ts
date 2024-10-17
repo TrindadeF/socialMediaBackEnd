@@ -4,7 +4,8 @@ import { User } from '../../database'
 
 export const updateUser = async (req: Request, res: Response) => {
     const { id } = req.params
-    const { name, age, gender, email, nickName, description } = req.body
+    const { name, age, gender, email, nickName, description, profilePicUrl } =
+        req.body
 
     const updateData: Partial<User> = {}
 
@@ -15,8 +16,8 @@ export const updateUser = async (req: Request, res: Response) => {
     if (nickName) updateData.nickName = nickName
     if (description) updateData.description = description
 
-    if (req.file) {
-        updateData.profilePic = req.file.path
+    if (profilePicUrl) {
+        updateData.profilePic = profilePicUrl
     }
 
     try {
@@ -42,13 +43,14 @@ export const updateUser = async (req: Request, res: Response) => {
             })
         }
 
-        return res
-            .status(200)
-            .json({ message: 'Perfil atualizado com sucesso' })
+        return res.status(200).json({
+            message: 'Perfil atualizado com sucesso!',
+            updatedData: updateData,
+        })
     } catch (error) {
         console.error('Erro durante a atualização:', error)
         return res
-            .status(500) // Altere para 500 para indicar erro interno do servidor
+            .status(500)
             .json({ error: 'Erro ao atualizar perfil', details: error })
     }
 }

@@ -15,8 +15,9 @@ mongoose.connect(MONGO_URI)
 app.use(cors(corsOptions))
 app.use(helmet())
 app.use(limiter)
+app.use(express.json())
 
-app.use('/', express.json(), router)
+app.use(router)
 
 app.listen(process.env.PORT, () =>
     console.log(`Running on port ${process.env.PORT}`)

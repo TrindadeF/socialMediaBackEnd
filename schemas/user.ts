@@ -21,11 +21,6 @@ export const userSchema = new Schema<User>({
     confirmpassword: { type: 'string', required: true },
     nickName: { type: 'string' },
     description: { type: 'string' },
-<<<<<<< HEAD
-=======
-    stripeCustomerId: { type: String, required: false },
-    stripeSubscriptionId: { type: String, required: false },
->>>>>>> 6c0a4cdf4e461cd42a31474aef19d9ced8097464
     stripeSubscriptionStatus: {
         type: String,
         enum: [

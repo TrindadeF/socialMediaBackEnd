@@ -30,7 +30,7 @@ export const generateCheckout = async (userId: string, email: string) => {
         })
 
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card', 'multibanco'],
+            payment_method_types: ['card'],
             mode: 'subscription',
             client_reference_id: userId,
             customer: customer.id,

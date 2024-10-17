@@ -13,6 +13,19 @@ const s3 = new S3Client({
     },
 })
 
+const fileFilter = (req: any, file: any, cb: any) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
+    if (!allowedTypes.includes(file.mimetype)) {
+        return cb(
+            new Error(
+                'Tipo de arquivo não permitido. Aceito apenas JPEG, PNG e GIF'
+            ),
+            false
+        )
+    }
+    cb(null, true)
+}
+
 const upload = multer({
     storage: multerS3({
         s3: s3,
@@ -22,9 +35,26 @@ const upload = multer({
             cb(null, { fieldName: file.fieldname })
         },
         key: (req, file, cb) => {
-            cb(null, Date.now().toString() + '-' + file.originalname)
+            const fileKey = `profile_pics/${Date.now().toString()}-${file.originalname}`
+            cb(null, fileKey)
         },
     }),
+    fileFilter: fileFilter,
+    limits: { fileSize: 10 * 1024 * 1024 },
 })
 
-export const uploadSingle = upload.single('image')
+export const uploadSingle = (req: any, res: any, next: any) => {
+    upload.single('image')(req, res, (err: any) => {
+        if (err) {
+            return res
+                .status(400)
+                .json({ message: 'Erro ao fazer upload', details: err })
+        }
+
+        if (req.file) {
+            req.body.profilePicUrl = req.file.location
+        }
+
+        next()
+    })
+}
