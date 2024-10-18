@@ -1,14 +1,24 @@
 import { Request, Response } from 'express'
 import { userModel } from '../../models/users'
 import { User } from '../../database'
+import { FileWithLocation } from '../../types'
 
 export const updateUser = async (req: Request, res: Response) => {
     const { id } = req.params
-    const { name, age, gender, email, nickName, description, profilePicUrl } =
-        req.body
+    const { name, age, gender, email, nickName, description } = req.body
+
+    const file = req.file as FileWithLocation
+    const profilePicUrl = file?.location || req.body.profilePicUrl
+
+    const userIdFromToken = req.user?.id
+
+    if (userIdFromToken !== id) {
+        return res.status(403).json({
+            message: 'Você não tem permissão para editar este perfil.',
+        })
+    }
 
     const updateData: Partial<User> = {}
-
     if (name) updateData.name = name
     if (age) updateData.age = age
     if (gender) updateData.gender = gender
@@ -27,15 +37,10 @@ export const updateUser = async (req: Request, res: Response) => {
                 .json({ message: 'Nenhuma alteração foi enviada.' })
         }
 
-        console.log('Tentando atualizar o seguinte usuário:', id)
-        console.log('Com os seguintes dados:', updateData)
-
         const result = await userModel.updateOne(
             { _id: id },
             { $set: updateData }
         )
-
-        console.log('Resultado da atualização:', result)
 
         if (result.modifiedCount === 0) {
             return res.status(404).json({

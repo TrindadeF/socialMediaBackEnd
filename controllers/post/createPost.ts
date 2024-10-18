@@ -22,9 +22,16 @@ export const createPost = async (req: Request, res: Response) => {
                 .json({ error: 'Conteúdo do post ausente ou inválido' })
         }
 
+        const mediaUrls = req.body.mediaUrls || []
+
+        if (mediaUrls.length === 0) {
+            console.log('Nenhuma mídia foi enviada')
+        }
+
         const post = await PostModel.create({
             content: content.trim(),
             owner: req.user.id,
+            media: mediaUrls,
             createdAt: new Date(),
             likes: 0,
         })
