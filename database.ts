@@ -7,6 +7,7 @@ export type Post = {
     likes: number
     ownerName: string
     media: string
+    id: string
 }
 
 export type User = {

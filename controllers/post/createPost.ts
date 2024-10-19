@@ -1,12 +1,12 @@
 import { Response, Request } from 'express'
 import PostModel from '../../models/post'
+import { FileWithLocation } from '../../types'
 
 export const createPost = async (req: Request, res: Response) => {
     try {
         const { content } = req.body
 
         if (!req.user || !req.user.id) {
-            console.log('Usuário não autenticado ou ID ausente')
             return res
                 .status(401)
                 .json({ error: 'Usuário não autenticado ou ID ausente' })
@@ -22,18 +22,21 @@ export const createPost = async (req: Request, res: Response) => {
                 .json({ error: 'Conteúdo do post ausente ou inválido' })
         }
 
-        const mediaUrls = req.body.mediaUrls || []
+        const file = req.file as FileWithLocation
+        const mediaUrl = file ? file.location : null
 
-        if (mediaUrls.length === 0) {
+        if (!mediaUrl) {
             console.log('Nenhuma mídia foi enviada')
+        } else {
+            console.log('Mídia enviada:', mediaUrl)
         }
 
         const post = await PostModel.create({
             content: content.trim(),
             owner: req.user.id,
-            media: mediaUrls,
+            media: mediaUrl ? [mediaUrl] : [],
             createdAt: new Date(),
-            likes: 0,
+            likes: [],
         })
 
         return res

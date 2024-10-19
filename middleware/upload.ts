@@ -20,6 +20,7 @@ const fileFilter = (req: any, file: any, cb: any) => {
         'image/gif',
         'video/mp4',
         'video/mpeg',
+        'image/WEBP',
     ]
     if (!allowedTypes.includes(file.mimetype)) {
         return cb(

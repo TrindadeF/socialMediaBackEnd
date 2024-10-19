@@ -19,7 +19,8 @@ export const postSchema = new Schema({
         default: Date.now,
     },
     likes: {
-        type: Number,
-        default: 0,
+        type: [Schema.Types.ObjectId],
+        ref: 'User',
+        default: [],
     },
 })
