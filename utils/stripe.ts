@@ -97,7 +97,7 @@ export const generateCheckout3 = async (userId: string, email: string) => {
             cancel_url: `http://localhost:3000/error`,
             line_items: [
                 {
-                    price: process.env.STRIPE_ID_PLAN_3,
+                    price: process.env.STRIPE_ID_PLAN3,
                     quantity: 1,
                 },
             ],

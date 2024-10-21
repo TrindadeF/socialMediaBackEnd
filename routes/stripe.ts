@@ -8,7 +8,7 @@ import {
 
 const router = Router()
 
-router.post('/checkout', async (req: Request, res: Response) => {
+router.post('/checkout/plan1', async (req: Request, res: Response) => {
     const { userId, email } = req.body
 
     try {
