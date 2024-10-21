@@ -1,12 +1,26 @@
 import { Request, Response } from 'express'
-import { Post } from '../../database'
-import postModel from '../../models/post'
+import PostModel from '../../models/post'
 
-export const updatePosts = async (req: Request, res: Response) => {
-    const { id } = req.params
+export const updatePost = async (req: Request, res: Response) => {
     try {
-        const post: Post = req.body
-        await postModel.updateOne({ _id: id }, post)
-        return res.status(200).json({ message: 'Posts updated' })
-    } catch (error) {}
+        const postId = req.params.id
+
+        const updatedPost = await PostModel.findByIdAndUpdate(
+            postId,
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+            }
+        )
+
+        if (!updatedPost) {
+            return res.status(404).json({ error: 'Post não encontrado' })
+        }
+
+        return res.status(200).json(updatedPost)
+    } catch (error) {
+        console.error('Erro ao atualizar o post:', error)
+        return res.status(500).json({ error: 'Erro ao atualizar o post' })
+    }
 }

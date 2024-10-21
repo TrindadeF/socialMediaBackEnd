@@ -1,12 +1,18 @@
 import { Request, Response } from 'express'
-import Post from '../../models/post'
+import PostModel from '../../models/post'
 
-export const deletePosts = async (req: Request, res: Response) => {
-    const { id } = req.params
+export const deletePost = async (req: Request, res: Response) => {
     try {
-        await Post.deleteOne({ _id: id })
-        return res.status(200).json({ message: 'Post delete successfully ' })
+        const postId = req.params.id
+
+        const post = await PostModel.findByIdAndDelete(postId)
+        if (!post) {
+            return res.status(404).json({ error: 'Post não encontrado' })
+        }
+
+        return res.status(200).json({ message: 'Post deletado com sucesso' })
     } catch (error) {
-        return res.status(400).json(error)
+        console.error('Erro ao deletar o post:', error)
+        return res.status(500).json({ error: 'Erro ao deletar o post' })
     }
 }

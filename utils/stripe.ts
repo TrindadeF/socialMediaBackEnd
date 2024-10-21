@@ -52,6 +52,65 @@ export const generateCheckout = async (userId: string, email: string) => {
         throw error
     }
 }
+export const generateCheckout2 = async (userId: string, email: string) => {
+    try {
+        const customer = await createStripeCustomer({
+            email,
+        })
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            mode: 'subscription',
+            client_reference_id: userId,
+            customer: customer.id,
+            success_url: `http://localhost:3000/done`,
+            cancel_url: `http://localhost:3000/error`,
+            line_items: [
+                {
+                    price: process.env.STRIPE_ID_PLAN_2,
+                    quantity: 1,
+                },
+            ],
+        })
+
+        return {
+            url: session.url,
+        }
+    } catch (error) {
+        console.log('Error generating checkout session', error)
+        throw error
+    }
+}
+
+export const generateCheckout3 = async (userId: string, email: string) => {
+    try {
+        const customer = await createStripeCustomer({
+            email,
+        })
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            mode: 'subscription',
+            client_reference_id: userId,
+            customer: customer.id,
+            success_url: `http://localhost:3000/done`,
+            cancel_url: `http://localhost:3000/error`,
+            line_items: [
+                {
+                    price: process.env.STRIPE_ID_PLAN_3,
+                    quantity: 1,
+                },
+            ],
+        })
+
+        return {
+            url: session.url,
+        }
+    } catch (error) {
+        console.log('Error generating checkout session', error)
+        throw error
+    }
+}
 
 export const handleCheckoutSessionCompleted = async (event: {
     data: { object: Stripe.Checkout.Session }

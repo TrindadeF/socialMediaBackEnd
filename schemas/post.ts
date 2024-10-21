@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 
 export const postSchema = new Schema({
     content: {
@@ -18,9 +18,5 @@ export const postSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-    likes: {
-        type: [Schema.Types.ObjectId],
-        ref: 'User',
-        default: [],
-    },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }],
 })

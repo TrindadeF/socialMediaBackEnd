@@ -4,7 +4,7 @@ export type Post = {
     content: string
     owner: ObjectId
     createdAt: Date
-    likes: number
+    likes: string[]
     ownerName: string
     media: string
     id: string
