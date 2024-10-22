@@ -33,6 +33,8 @@ export type User = {
     stripeCustomerId: string
     stripeSubscriptionId: string
     stripeSubscriptionStatus: StripeSubscriptionStatus | null
+    resetPasswordToken: String
+    resetPasswordExpires: Number
 }
 
 type Gender = 'M' | 'F' | 'NB' | 'BI' | 'TR' | 'HOM'

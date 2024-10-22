@@ -33,4 +33,6 @@ export const userSchema = new Schema<User>({
         ],
         default: null,
     },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Number },
 })
