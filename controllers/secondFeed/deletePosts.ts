@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import PostModel from '../../models/post'
+import PostModel from '../../models/secondFeed'
 
 export const deletePost = async (req: Request, res: Response) => {
     try {

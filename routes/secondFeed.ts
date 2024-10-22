@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import { getPosts } from '../controllers/post/getPosts'
-import { validBody } from '../middleware/post/validBody'
-import { createPost } from '../controllers/post/createPost'
+import { createPost } from '../controllers/secondFeed/createPost'
+import { deletePost } from '../controllers/secondFeed/deletePosts'
+import { getPosts } from '../controllers/secondFeed/getPosts'
+import { likePost } from '../controllers/secondFeed/likePosts'
 import { authBody } from '../middleware/auth/authBody'
+import { validBody } from '../middleware/post/validBody'
 import { uploadSingle } from '../middleware/upload'
-import { likePost } from '../controllers/post/likePosts'
-import { deletePost } from '../controllers/post/deletePosts'
 
 const router = Router()
 

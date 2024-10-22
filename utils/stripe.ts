@@ -14,7 +14,7 @@ export const createStripeCustomer = async (data: {
     email: string
     name?: string
 }) => {
-    const customer = await getStripeCustomerByEmail(data?.email)
+    const customer = await getStripeCustomerByEmail(data.email)
     if (customer) return customer
 
     return stripe.customers.create({
@@ -23,11 +23,13 @@ export const createStripeCustomer = async (data: {
     })
 }
 
-export const generateCheckout = async (userId: string, email: string) => {
+export const generateCheckoutByPlan = async (
+    userId: string,
+    email: string,
+    planId: string
+) => {
     try {
-        const customer = await createStripeCustomer({
-            email,
-        })
+        const customer = await createStripeCustomer({ email })
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
@@ -38,66 +40,7 @@ export const generateCheckout = async (userId: string, email: string) => {
             cancel_url: `http://localhost:3000/error`,
             line_items: [
                 {
-                    price: process.env.STRIPE_ID_PLAN,
-                    quantity: 1,
-                },
-            ],
-        })
-
-        return {
-            url: session.url,
-        }
-    } catch (error) {
-        console.log('Error generating checkout session', error)
-        throw error
-    }
-}
-export const generateCheckout2 = async (userId: string, email: string) => {
-    try {
-        const customer = await createStripeCustomer({
-            email,
-        })
-
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            mode: 'subscription',
-            client_reference_id: userId,
-            customer: customer.id,
-            success_url: `http://localhost:3000/done`,
-            cancel_url: `http://localhost:3000/error`,
-            line_items: [
-                {
-                    price: process.env.STRIPE_ID_PLAN_2,
-                    quantity: 1,
-                },
-            ],
-        })
-
-        return {
-            url: session.url,
-        }
-    } catch (error) {
-        console.log('Error generating checkout session', error)
-        throw error
-    }
-}
-
-export const generateCheckout3 = async (userId: string, email: string) => {
-    try {
-        const customer = await createStripeCustomer({
-            email,
-        })
-
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            mode: 'subscription',
-            client_reference_id: userId,
-            customer: customer.id,
-            success_url: `http://localhost:3000/done`,
-            cancel_url: `http://localhost:3000/error`,
-            line_items: [
-                {
-                    price: process.env.STRIPE_ID_PLAN3,
+                    price: planId,
                     quantity: 1,
                 },
             ],
@@ -152,7 +95,6 @@ export const handleSubscriptionSessionCompleted = async (event: {
         throw new Error('User with stripeCustomerId not found')
     }
 
-    userExist.stripeCustomerId = stripeCustomerId
     userExist.stripeSubscriptionId = stripeSubscriptionId
     userExist.stripeSubscriptionStatus = subscriptionStatus
     await userExist.save()
@@ -169,7 +111,6 @@ export const handleCancelPlan = async (event: {
         throw new Error('User with stripeCustomerId not found')
     }
 
-    userExist.stripeCustomerId = stripeCustomerId
     userExist.stripeSubscriptionStatus = null
     await userExist.save()
 }

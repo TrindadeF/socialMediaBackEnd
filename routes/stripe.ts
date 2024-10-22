@@ -1,40 +1,26 @@
 import { Router, Request, Response } from 'express'
-import {
-    generateCheckout,
-    createPortalCustomer,
-    generateCheckout2,
-    generateCheckout3,
-} from '../utils/stripe'
+import { generateCheckoutByPlan, createPortalCustomer } from '../utils/stripe'
 
 const router = Router()
 
-router.post('/checkout/plan1', async (req: Request, res: Response) => {
+router.post('/checkout/:plan', async (req: Request, res: Response) => {
     const { userId, email } = req.body
+    const plan = req.params.plan
 
-    try {
-        const { url } = await generateCheckout(userId, email)
-        res.status(200).json({ url })
-    } catch (error) {
-        console.error('Erro ao gerar sessão de checkout:', error)
-        res.status(500).json({ error: 'Erro ao gerar sessão de checkout' })
+    const planMap: { [key: string]: string | undefined } = {
+        plan1: process.env.STRIPE_ID_PLAN,
+        plan2: process.env.STRIPE_ID_PLAN_2,
+        plan3: process.env.STRIPE_ID_PLAN_3,
     }
-})
-router.post('/checkout/plan2', async (req: Request, res: Response) => {
-    const { userId, email } = req.body
 
-    try {
-        const { url } = await generateCheckout2(userId, email)
-        res.status(200).json({ url })
-    } catch (error) {
-        console.error('Erro ao gerar sessão de checkout:', error)
-        res.status(500).json({ error: 'Erro ao gerar sessão de checkout' })
+    const planId = planMap[plan]
+
+    if (!planId) {
+        return res.status(400).json({ error: 'Plano inválido' })
     }
-})
-router.post('/checkout/plan3', async (req: Request, res: Response) => {
-    const { userId, email } = req.body
 
     try {
-        const { url } = await generateCheckout3(userId, email)
+        const { url } = await generateCheckoutByPlan(userId, email, planId)
         res.status(200).json({ url })
     } catch (error) {
         console.error('Erro ao gerar sessão de checkout:', error)

@@ -1,6 +1,6 @@
 import { Response, Request } from 'express'
 import mongoose from 'mongoose'
-import PostModel from '../../models/post'
+import PostModel from '../../models/primaryFeed'
 
 export const likePost = async (req: Request, res: Response) => {
     try {

@@ -1,5 +1,5 @@
 import { Response, Request } from 'express'
-import PostModel from '../../models/post'
+import PostModel from '../../models/secondFeed'
 import { FileWithLocation } from '../../types'
 
 export const createPost = async (req: Request, res: Response) => {

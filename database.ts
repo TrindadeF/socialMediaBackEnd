@@ -1,6 +1,16 @@
 import { ObjectId } from 'mongoose'
 
-export type Post = {
+export type primaryFeed = {
+    content: string
+    owner: ObjectId
+    createdAt: Date
+    likes: string[]
+    ownerName: string
+    media: string
+    id: string
+}
+
+export type secondFeed = {
     content: string
     owner: ObjectId
     createdAt: Date
