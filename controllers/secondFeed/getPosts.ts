@@ -3,7 +3,14 @@ import PostModel from '../../models/secondFeed'
 
 export const getPosts = async (req: Request, res: Response) => {
     try {
-        const posts = await PostModel.find()
+        const userId = req.query.userId
+
+        let filter = {}
+        if (userId) {
+            filter = { owner: userId }
+        }
+
+        const posts = await PostModel.find(filter)
             .populate('owner', 'nickName profilePic')
             .exec()
 

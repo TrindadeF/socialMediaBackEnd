@@ -32,7 +32,7 @@ export const forgotPassword = async (
 
         const resetLink = `http://localhost:4200/reset-password/${token}`
         const mailOptions = {
-            from: 'seuemail@gmail.com',
+            from: 'nakedlove.service@gmail.com',
             to: user.email,
             subject: 'Redefinição de senha',
             text: `Você solicitou uma redefinição de senha. Clique no link para redefinir sua senha: ${resetLink}`,
@@ -40,7 +40,10 @@ export const forgotPassword = async (
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                res.status(500).json({ message: 'Erro ao enviar o e-mail.' })
+                res.status(500).json({
+                    message: 'Erro ao enviar o e-mail.',
+                    error: error.message,
+                })
                 return
             }
             res.json({ message: 'E-mail enviado com sucesso.' })

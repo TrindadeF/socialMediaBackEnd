@@ -7,6 +7,7 @@ import stripeWebHook from './stripeWebHook'
 import primaryFeed from './primaryFeed'
 import secondFeed from './secondFeed'
 import { forgotPassword } from '../controllers/users/resetPassword'
+import { getAllUsers } from '../controllers/users/getAllusers'
 
 const router = Router()
 
@@ -18,5 +19,6 @@ router.use('/stripe', stripeRoute)
 router.use('/stripe-webhook', stripeWebHook)
 router.use('/secondFeed', secondFeed)
 router.post('/reset-password', forgotPassword)
+router.get('/users', getAllUsers)
 
 export default router
