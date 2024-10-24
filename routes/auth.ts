@@ -6,6 +6,7 @@ import { authBody } from '../middleware/auth/authBody'
 import { updateUser } from '../controllers/users/updateUser'
 import { uploadSingle } from '../middleware/upload'
 import { getUserProfile } from '../controllers/users/getUserProfile'
+import { likeUser } from '../controllers/users/likeUser'
 
 const router = Router()
 
@@ -14,5 +15,6 @@ router.post('/login', getUser)
 router.get('/profile', authBody, getUserProfile)
 router.put('/profile/edit/:id', authBody, uploadSingle, updateUser)
 router.delete('/profile/:id', deleteUser)
+router.post('/like-user', likeUser)
 
 export default router

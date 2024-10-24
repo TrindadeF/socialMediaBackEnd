@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 import { User } from '../database'
 
 export const userSchema = new Schema<User>({
@@ -35,4 +35,6 @@ export const userSchema = new Schema<User>({
     },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Number },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 })

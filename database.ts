@@ -35,6 +35,8 @@ export type User = {
     stripeSubscriptionStatus: StripeSubscriptionStatus | null
     resetPasswordToken: String
     resetPasswordExpires: Number
+    likes: ObjectId
+    matches: ObjectId
 }
 
 type Gender = 'M' | 'F' | 'NB' | 'BI' | 'TR' | 'HOM'
