@@ -7,6 +7,10 @@ import { updateUser } from '../controllers/users/updateUser'
 import { uploadSingle } from '../middleware/upload'
 import { getUserProfile } from '../controllers/users/getUserProfile'
 import { likeUser } from '../controllers/users/likeUser'
+import {
+    getUsersWhoLikedPost,
+    getUsersWhoLikedProfile,
+} from '../controllers/users/getUsersWhoLiked'
 
 const router = Router()
 
@@ -16,5 +20,7 @@ router.get('/profile', authBody, getUserProfile)
 router.put('/profile/edit/:id', authBody, uploadSingle, updateUser)
 router.delete('/profile/:id', deleteUser)
 router.post('/like-user', likeUser)
+router.get('/profile/:userId/likes', getUsersWhoLikedProfile)
+router.get('/:postId/likes', getUsersWhoLikedPost)
 
 export default router

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import secondFeedModel from '../../models/secondFeed'
-import { secondFeed } from '../../database'
 
 export const getPostsByUserId = async (req: Request, res: Response) => {
     try {
