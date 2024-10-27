@@ -39,6 +39,23 @@ export type User = {
     matches: ObjectId
 }
 
+export type Message = {
+    sender: ObjectId
+    receiver: ObjectId
+    content: string
+    createdAt: Date
+    chatId: ObjectId
+    read: boolean
+}
+
+export type Chat = {
+    participants: ObjectId[]
+    messages: Message[]
+    lastMessage: Message | null
+    createdAt: Date
+    updatedAt: Date
+}
+
 type Gender = 'M' | 'F' | 'NB' | 'BI' | 'TR' | 'HOM'
 type StripeSubscriptionStatus =
     | 'active'
