@@ -10,6 +10,15 @@ export const chatSchema = new mongoose.Schema({
         },
     ],
     messages: [messageSchema],
-    lastMessage: { type: Object, default: null },
-    updatedAt: { type: Date, default: Date.now },
+    lastMessage: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message',
+        default: null,
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now,
+    },
+    senderNickName: { type: String, default: '' },
+    receiverNickName: { type: String, default: '' },
 })

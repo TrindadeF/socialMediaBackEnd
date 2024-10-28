@@ -13,4 +13,6 @@ export const messageSchema = new mongoose.Schema({
     },
     content: { type: String, required: true },
     timestamp: { type: Date, default: Date.now },
+    senderNickName: { type: String },
+    receiverNickName: { type: String },
 })
