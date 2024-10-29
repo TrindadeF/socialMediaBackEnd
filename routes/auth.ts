@@ -12,8 +12,8 @@ import {
     getUsersWhoLikedProfile,
 } from '../controllers/users/getUsersWhoLiked'
 import { checkMutualLike } from '../controllers/users/checkmatch'
-import { getMessages, sendMessage } from '../controllers/users/message'
-import { getChatsByUserId } from '../controllers/users/userChats'
+import { sendMessage } from '../controllers/users/message'
+import { getChatBetweenUsers } from '../controllers/users/userChats'
 
 const router = Router()
 
@@ -27,7 +27,6 @@ router.get('/profile/:userId/likes', getUsersWhoLikedProfile)
 router.get('/:postId/likes', getUsersWhoLikedPost)
 router.get('/profile/check-mutual-like', checkMutualLike)
 router.post('/send-message', authBody, sendMessage)
-router.get('/messages', authBody, getMessages)
-router.get('/chats/:userId', getChatsByUserId)
+router.get('/chats/:userId/:otherUserId', getChatBetweenUsers)
 
 export default router

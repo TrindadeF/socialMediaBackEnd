@@ -2,12 +2,14 @@ import { Request, Response } from 'express'
 import { chatModel } from '../../models/chat'
 import { userModel } from '../../models/users'
 
-export const getChatsByUserId = async (req: Request, res: Response) => {
-    const userId = req.params.userId
+export const getChatBetweenUsers = async (req: Request, res: Response) => {
+    const { userId, otherUserId } = req.params
 
     try {
-        const chats = await chatModel
-            .find({ participants: userId })
+        const chat = await chatModel
+            .findOne({
+                participants: { $all: [userId, otherUserId] },
+            })
             .populate({
                 path: 'participants',
                 select: 'nickName',
@@ -22,7 +24,11 @@ export const getChatsByUserId = async (req: Request, res: Response) => {
                 ],
             })
 
-        const formattedChats = chats.map((chat) => ({
+        if (!chat) {
+            return res.status(404).json({ message: 'Chat não encontrado' })
+        }
+
+        const formattedChat = {
             id: chat._id.toString(),
             participants: chat.participants.map((participant) => ({
                 id: participant._id.toString(),
@@ -45,11 +51,11 @@ export const getChatsByUserId = async (req: Request, res: Response) => {
                 content: message.content,
                 timestamp: message.timestamp,
             })),
-        }))
+        }
 
-        res.json(formattedChats)
+        res.json(formattedChat)
     } catch (error) {
-        console.error('Erro ao buscar chats:', error)
-        res.status(500).json({ message: 'Erro ao buscar chats' })
+        console.error('Erro ao buscar chat:', error)
+        res.status(500).json({ message: 'Erro ao buscar chat' })
     }
 }
