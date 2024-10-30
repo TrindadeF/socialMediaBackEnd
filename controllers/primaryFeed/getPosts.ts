@@ -4,25 +4,31 @@ import PostModel from '../../models/primaryFeed'
 export const getPosts = async (req: Request, res: Response) => {
     try {
         const posts = await PostModel.find()
-            .populate('owner', 'nickName profilePic')
+            .populate({
+                path: 'owner',
+                select: 'nickName profilePic',
+                match: { nickName: { $exists: true } },
+            })
             .exec()
 
-        const postsWithLikes = posts.map((post) => {
-            const owner = post.owner as unknown as {
-                nickName: string
-                profilePic: string
-            }
+        const postsWithLikes = posts
+            .filter((post) => post.owner && typeof post.owner !== 'string')
+            .map((post) => {
+                const owner = post.owner as unknown as {
+                    nickName: string
+                    profilePic: string
+                }
 
-            return {
-                _id: post._id,
-                ownerName: owner.nickName,
-                ownerProfileImageUrl: owner.profilePic,
-                content: post.content,
-                createdAt: post.createdAt,
-                media: post.media,
-                likes: post.likes,
-            }
-        })
+                return {
+                    _id: post._id,
+                    ownerName: owner.nickName,
+                    ownerProfileImageUrl: owner.profilePic,
+                    content: post.content,
+                    createdAt: post.createdAt,
+                    media: post.media,
+                    likes: post.likes,
+                }
+            })
 
         return res.status(200).json(postsWithLikes)
     } catch (error) {
