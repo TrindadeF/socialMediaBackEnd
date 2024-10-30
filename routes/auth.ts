@@ -19,7 +19,7 @@ import {
     getChatsByUserId,
 } from '../controllers/chat/getChatByUsers'
 import { deletePost } from '../controllers/secondFeed/deletePosts'
-import { deletePostP } from '../controllers/primaryFeed/deletePosts'
+import { deletePostP} from '../controllers/primaryFeed/deletePosts'
 
 const router = Router()
 
