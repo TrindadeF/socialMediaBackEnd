@@ -13,7 +13,6 @@ import {
 } from '../controllers/users/getUsersWhoLiked'
 import { checkMutualLike } from '../controllers/users/checkmatch'
 import { sendMessage } from '../controllers/chat/getMessage'
-import { getOrCreateChatByParticipants } from '../controllers/chat/getChat'
 import {
     getChatByUsers,
     getChatsByUserId,
