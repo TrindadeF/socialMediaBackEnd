@@ -31,9 +31,7 @@ export const getChatsByUserId = async (req: Request, res: Response) => {
 
     try {
         const chats = await chatModel
-            .find({
-                participants: userId,
-            })
+            .find({ participants: userId })
             .populate('participants', 'nickName')
 
         if (!chats || chats.length === 0) {
@@ -43,6 +41,6 @@ export const getChatsByUserId = async (req: Request, res: Response) => {
         return res.status(200).json(chats)
     } catch (error) {
         console.error('Erro ao buscar chats:', error)
-        return res.status(500).json({ message: 'Erro ao buscar chats.' })
+        return res.status(500).json({ message: 'Erro ao buscar chats.', error })
     }
 }
