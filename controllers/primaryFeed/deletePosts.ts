@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import PostModel from '../../models/primaryFeed'
 
-export const deletePost = async (req: Request, res: Response) => {
+export const deletePostP = async (req: Request, res: Response) => {
     try {
         const postId = req.params.id
 

@@ -12,8 +12,14 @@ import {
     getUsersWhoLikedProfile,
 } from '../controllers/users/getUsersWhoLiked'
 import { checkMutualLike } from '../controllers/users/checkmatch'
-import { getMessages, sendMessage } from '../controllers/users/message'
-import { getChatsByUserId } from '../controllers/users/userChats'
+import { sendMessage } from '../controllers/chat/getMessage'
+import { getOrCreateChatByParticipants } from '../controllers/chat/getChat'
+import {
+    getChatByUsers,
+    getChatsByUserId,
+} from '../controllers/chat/getChatByUsers'
+import { deletePost } from '../controllers/secondFeed/deletePosts'
+import { deletePostP } from '../controllers/primaryFeed/deletePosts'
 
 const router = Router()
 
@@ -27,7 +33,10 @@ router.get('/profile/:userId/likes', getUsersWhoLikedProfile)
 router.get('/:postId/likes', getUsersWhoLikedPost)
 router.get('/profile/check-mutual-like', checkMutualLike)
 router.post('/send-message', authBody, sendMessage)
-router.get('/messages', authBody, getMessages)
-router.get('/chats/:userId', getChatsByUserId)
+router.get('/chats', getOrCreateChatByParticipants)
+router.delete('/delete/:postId', deletePostP)
+router.delete('/delete/second/:postId', deletePost)
+router.get('/chats/:userId1/:userId2', getChatByUsers)
+router.get('/chats', authBody, getChatsByUserId)
 
 export default router

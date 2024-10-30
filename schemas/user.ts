@@ -18,7 +18,7 @@ export const userSchema = new Schema<User>({
         ],
     },
     password: { type: 'string', required: true },
-    confirmpassword: { type: 'string'},
+    confirmpassword: { type: 'string' },
     nickName: { type: 'string' },
     description: { type: 'string' },
     stripeSubscriptionStatus: {
