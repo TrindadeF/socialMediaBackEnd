@@ -19,7 +19,7 @@ import {
     getChatsByUserId,
 } from '../controllers/chat/getChatByUsers'
 import { deletePost } from '../controllers/secondFeed/deletePosts'
-import { deletePostP} from '../controllers/primaryFeed/deletePosts'
+import { deletePostP } from '../controllers/primaryFeed/deletePosts'
 
 const router = Router()
 
@@ -33,7 +33,6 @@ router.get('/profile/:userId/likes', getUsersWhoLikedProfile)
 router.get('/:postId/likes', getUsersWhoLikedPost)
 router.get('/profile/check-mutual-like', checkMutualLike)
 router.post('/send-message', authBody, sendMessage)
-router.get('/chats', getOrCreateChatByParticipants)
 router.delete('/delete/:postId', deletePostP)
 router.delete('/delete/second/:postId', deletePost)
 router.get('/chats/:userId1/:userId2', getChatByUsers)
