@@ -30,6 +30,7 @@ export const createPost = async (req: Request, res: Response) => {
             media: mediaUrl ? [mediaUrl] : [],
             createdAt: new Date(),
             likes: [],
+            comments: [],
         })
 
         return res

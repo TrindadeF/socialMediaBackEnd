@@ -19,4 +19,6 @@ export const postSchema = new Schema({
         default: Date.now,
     },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }],
+
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 })

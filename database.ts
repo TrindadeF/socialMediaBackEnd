@@ -8,6 +8,7 @@ export type primaryFeed = {
     ownerName: string
     media: string
     id: string
+    comments: Comments[]
 }
 
 export type secondFeed = {
@@ -18,6 +19,7 @@ export type secondFeed = {
     ownerName: string
     media: string
     id: string
+    comments: Comments[]
 }
 
 export type User = {
@@ -49,6 +51,12 @@ export type Message = {
     createdAt: Date
     chatId: ObjectId
     read: boolean
+}
+
+export type Comments = {
+    content: string
+    cretedAt: Date
+    owner: ObjectId
 }
 
 export type Chat = {
