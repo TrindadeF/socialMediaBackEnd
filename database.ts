@@ -21,6 +21,7 @@ export type secondFeed = {
 }
 
 export type User = {
+    _id: ObjectId
     name: string
     age: number
     profilePic: string
@@ -35,8 +36,10 @@ export type User = {
     stripeSubscriptionStatus: StripeSubscriptionStatus | null
     resetPasswordToken: String
     resetPasswordExpires: Number
-    likes: ObjectId
-    matches: ObjectId
+    likes: ObjectId[]
+    matches: ObjectId[]
+    followers: ObjectId[]
+    following: ObjectId[]
 }
 
 export type Message = {

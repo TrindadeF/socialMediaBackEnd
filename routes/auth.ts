@@ -19,6 +19,8 @@ import {
 } from '../controllers/chat/getChatByUsers'
 import { deletePost } from '../controllers/secondFeed/deletePosts'
 import { deletePostP } from '../controllers/primaryFeed/deletePosts'
+import { followUser } from '../controllers/users/followUser'
+import { isFollowing } from '../controllers/users/isFollowing'
 
 const router = Router()
 
@@ -36,5 +38,7 @@ router.delete('/delete/:postId', deletePostP)
 router.delete('/delete/second/:postId', deletePost)
 router.get('/chats/:userId1/:userId2', getChatByUsers)
 router.get('/chats', authBody, getChatsByUserId)
+router.post('/profile/:targetUserId/follow', authBody, followUser)
+router.get('/profile/:userId/isFollowing/:targetUserId', isFollowing)
 
 export default router

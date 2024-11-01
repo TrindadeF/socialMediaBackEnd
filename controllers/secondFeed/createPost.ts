@@ -12,27 +12,20 @@ export const createPost = async (req: Request, res: Response) => {
                 .json({ error: 'Usuário não autenticado ou ID ausente' })
         }
 
-        if (
-            !content ||
-            typeof content !== 'string' ||
-            content.trim().length === 0
-        ) {
-            return res
-                .status(400)
-                .json({ error: 'Conteúdo do post ausente ou inválido' })
-        }
+        const isContentValid =
+            content && typeof content === 'string' && content.trim().length > 0
 
         const file = req.file as FileWithLocation
         const mediaUrl = file ? file.location : null
 
-        if (!mediaUrl) {
-            console.log('Nenhuma mídia foi enviada')
-        } else {
-            console.log('Mídia enviada:', mediaUrl)
+        if (!isContentValid && !mediaUrl) {
+            return res.status(400).json({
+                error: 'É necessário fornecer um conteúdo ou uma imagem para criar o post',
+            })
         }
 
         const post = await PostModel.create({
-            content: content.trim(),
+            content: isContentValid ? content.trim() : undefined,
             owner: req.user.id,
             media: mediaUrl ? [mediaUrl] : [],
             createdAt: new Date(),

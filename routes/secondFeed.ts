@@ -12,7 +12,7 @@ const router = Router()
 
 router.get('/', getPosts)
 router.delete('/:id', authBody, deletePost)
-router.post('/', authBody, uploadSingle, validBody, createPost)
+router.post('/', authBody, uploadSingle, createPost)
 router.put('/:id', validBody)
 router.post('/:postId/like', authBody, likePost)
 router.get('/posts', getPostsByUserId)
