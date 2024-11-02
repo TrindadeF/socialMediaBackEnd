@@ -10,6 +10,7 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
         const posts = await secondFeedModel
             .find(filter)
             .populate('owner', 'nickName profilePic')
+            .populate('comments.owner', 'nickName')
             .exec()
 
         const postsWithLikes = posts.map((post) => {

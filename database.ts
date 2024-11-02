@@ -57,6 +57,7 @@ export type Comments = {
     content: string
     cretedAt: Date
     owner: ObjectId
+    postId: ObjectId
 }
 
 export type Chat = {

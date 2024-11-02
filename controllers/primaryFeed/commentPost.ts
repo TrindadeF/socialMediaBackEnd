@@ -26,6 +26,7 @@ export const addComment = async (req: Request, res: Response) => {
             content: content.trim(),
             owner: req.user.id,
             createdAt: new Date(),
+            postId,
         })
 
         const post = await primaryFeed.findByIdAndUpdate(
