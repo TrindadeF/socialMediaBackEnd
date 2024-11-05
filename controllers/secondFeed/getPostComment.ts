@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { commentsModel } from '../../models/comments'
-import primaryFeed from '../../models/primaryFeed'
+import secondFeed from '../../models/secondFeed'
 
 interface IPost {
     ownerName: string
@@ -31,7 +31,7 @@ export const getPostComments = async (req: Request, res: Response) => {
     try {
         const postObjectId = new mongoose.Types.ObjectId(postId)
 
-        const post = await primaryFeed
+        const post = await secondFeed
             .findById(postObjectId)
             .populate({
                 path: 'owner',

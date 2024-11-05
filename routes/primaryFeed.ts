@@ -8,6 +8,7 @@ import { likePost } from '../controllers/primaryFeed/likePosts'
 import { deletePostP } from '../controllers/primaryFeed/deletePosts'
 import { addComment } from '../controllers/primaryFeed/commentPost'
 import { getPostComments } from '../controllers/primaryFeed/getPostComment'
+import { deleteComment } from '../controllers/primaryFeed/deleteComments'
 
 const router = Router()
 
@@ -18,5 +19,6 @@ router.put('/:id', validBody)
 router.post('/:postId/like', authBody, likePost)
 router.post('/posts/:postId/comments', authBody, addComment)
 router.get('/posts/:postId/comments', getPostComments)
+router.delete('/comments/:commentId', deleteComment)
 
 export default router

@@ -2,6 +2,7 @@ import {
     generateCheckoutByPlan,
     createPortalCustomer,
     getStripeCustomerByEmail,
+    stripe,
 } from '../utils/stripe'
 import { Request, Response } from 'express'
 import { userModel } from '../models/users'
@@ -53,5 +54,34 @@ export const createPortal = async (req: Request, res: Response) => {
         return res
             .status(500)
             .json({ error: 'Erro ao criar portal do cliente' })
+    }
+}
+
+export const checkSubscriptionStatus = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const user = await userModel.findById(id)
+
+        if (!user || !user.stripeCustomerId) {
+            return res
+                .status(404)
+                .json({
+                    message:
+                        'Usuário não encontrado ou não associado ao Stripe.',
+                })
+        }
+
+        const subscriptions = await stripe.subscriptions.list({
+            customer: user.stripeCustomerId,
+            status: 'active',
+        })
+
+        const hasActiveSubscription = subscriptions.data.length > 0
+        return res.status(200).json({ hasActiveSubscription })
+    } catch (error) {
+        console.error('Erro ao verificar status da assinatura:', error)
+        res.status(500).json({
+            error: 'Erro ao verificar status da assinatura.',
+        })
     }
 }

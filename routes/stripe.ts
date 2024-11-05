@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { generateCheckoutByPlan, createPortalCustomer } from '../utils/stripe'
+import { checkSubscriptionStatus } from '../controllers/checkoutController'
 
 const router = Router()
 
@@ -39,5 +40,7 @@ router.post('/create-portal', async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Erro ao criar portal de cliente' })
     }
 })
+
+router.get('/subscription-status', checkSubscriptionStatus)
 
 export default router
