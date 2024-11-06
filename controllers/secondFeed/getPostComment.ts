@@ -4,6 +4,7 @@ import { commentsModel } from '../../models/comments'
 import secondFeed from '../../models/secondFeed'
 
 interface IPost {
+    ownerId: string
     ownerName: string
     createdAt: Date
     content: string
@@ -36,7 +37,7 @@ export const getPostComments = async (req: Request, res: Response) => {
             .findById(postObjectId)
             .populate({
                 path: 'owner',
-                select: 'nickName',
+                select: 'nickName _id',
             })
             .populate('comments')
 
@@ -44,7 +45,10 @@ export const getPostComments = async (req: Request, res: Response) => {
             return res.status(404).json({ error: 'Post não encontrado' })
         }
 
-        const postOwner = post.owner as unknown as { nickName: string }
+        const postOwner = post.owner as unknown as {
+            _id: string
+            nickName: string
+        }
 
         const comments = await commentsModel
             .find({ postId: postObjectId })
@@ -73,6 +77,7 @@ export const getPostComments = async (req: Request, res: Response) => {
 
         const response: IPostCommentsResponse = {
             post: {
+                ownerId: postOwner._id,
                 ownerName: postOwner.nickName,
                 createdAt: post.createdAt,
                 content: post.content,
