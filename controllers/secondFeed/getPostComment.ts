@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import mongoose from 'mongoose'
+import mongoose, { ObjectId } from 'mongoose'
 import { commentsModel } from '../../models/comments'
 import secondFeed from '../../models/secondFeed'
 
@@ -8,6 +8,7 @@ interface IPost {
     createdAt: Date
     content: string
     media: string[]
+    likes: number
 }
 
 interface IComment {
@@ -76,6 +77,7 @@ export const getPostComments = async (req: Request, res: Response) => {
                 createdAt: post.createdAt,
                 content: post.content,
                 media: post.media,
+                likes: post.likes.length,
             },
             comments: formattedComments,
         }
