@@ -25,6 +25,7 @@ export const addComment = async (req: Request, res: Response) => {
         const newComment = await commentsModel.create({
             content: content.trim(),
             owner: req.user.id,
+            postId: postId,
             createdAt: new Date(),
         })
 
