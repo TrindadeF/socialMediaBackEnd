@@ -18,18 +18,6 @@ export const deleteComment = async (req: Request, res: Response) => {
         if (!post) {
             return res.status(404).json({ error: 'Post não encontrado' })
         }
-
-        if (
-            !req.user ||
-            (req.user.id !== comment.owner.toString() &&
-                req.user.id !== post.owner.toString())
-        ) {
-            return res
-                .status(403)
-                .json({
-                    error: 'Você não tem permissão para excluir este comentário',
-                })
-        }
         await commentsModel.findByIdAndDelete(commentObjectId)
 
         await secondFeed.findByIdAndUpdate(comment.postId, {
