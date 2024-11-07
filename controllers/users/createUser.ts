@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { userModel } from '../../models/users'
 import { User } from '../../database'
 import bcrypt from 'bcrypt'
+import { sendWelcomeEmail } from '../../utils/emailService'
 
 export const createUser = async (req: Request, res: Response) => {
     const {
@@ -38,6 +39,8 @@ export const createUser = async (req: Request, res: Response) => {
             stripeSubscriptionId,
             stripeSubscriptionStatus,
         })
+
+        sendWelcomeEmail(newUser.email)
 
         return res
             .status(201)
