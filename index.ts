@@ -9,7 +9,6 @@ import mongoose from 'mongoose'
 import { Server } from 'socket.io'
 import http from 'http'
 import { messageModel } from './models/message'
-import * as fetch from 'node-fetch'
 
 const userSockets: { [key: string]: string } = {}
 const app = express()
@@ -18,10 +17,6 @@ const io = new Server(server, {
     cors: corsOptions,
 })
 const MONGO_URI = process.env.MONGO_URI
-
-if (!globalThis.fetch) {
-    globalThis.fetch = fetch as any
-}
 
 mongoose
     .connect(MONGO_URI)

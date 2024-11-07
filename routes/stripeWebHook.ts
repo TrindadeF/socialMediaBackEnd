@@ -9,7 +9,7 @@ import { userModel } from '../models/users'
 
 const router = Router()
 const stripe = new Stripe(process.env.STRIPE_SECRET as string, {
-    apiVersion: '2024-10-28.acacia',
+    apiVersion: '2024-09-30.acacia',
 })
 
 router.post(
