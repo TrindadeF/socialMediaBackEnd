@@ -65,6 +65,7 @@ export const getPostComments = async (req: Request, res: Response) => {
             }
 
             return {
+                id: comment.id,
                 owner: {
                     _id: commentOwner._id.toString(),
                     profilePic: commentOwner.profilePic,
