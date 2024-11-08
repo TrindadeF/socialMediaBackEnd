@@ -31,7 +31,6 @@ app.use(cors(corsOptions))
 app.use(helmet())
 app.use(limiter)
 app.use(express.json())
-app.set('trust proxy', true)
 
 app.use(router)
 
