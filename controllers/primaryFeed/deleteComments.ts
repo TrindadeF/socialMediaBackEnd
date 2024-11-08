@@ -12,6 +12,11 @@ export const deleteComment = async (req: Request, res: Response) => {
         const comment = await commentsModel.findById(commentObjectId)
         if (!comment) {
             return res.status(404).json({ error: 'Comentário não encontrado' })
+
+        }
+        const post = await primaryFeed.findById(comment.postId)
+        if (!post) {
+            return res.status(404).json({ error: 'Post não encontrado' })
         }
 
         await commentsModel.findByIdAndDelete(commentObjectId)
@@ -22,7 +27,11 @@ export const deleteComment = async (req: Request, res: Response) => {
 
         return res
             .status(200)
-            .json({ message: 'Comentário apagado com sucesso' })
+            .json({ message: 'Comentário apagado com sucesso',
+          
+            
+             })
+            
     } catch (error) {
         console.error(error)
         return res.status(500).json({ error: 'Erro ao apagar o comentário' })

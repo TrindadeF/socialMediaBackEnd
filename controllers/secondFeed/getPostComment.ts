@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import mongoose, { ObjectId } from 'mongoose'
+import mongoose from 'mongoose'
 import { commentsModel } from '../../models/comments'
 import secondFeed from '../../models/secondFeed'
 
@@ -29,6 +29,10 @@ interface IPostCommentsResponse {
 
 export const getPostComments = async (req: Request, res: Response) => {
     const { postId } = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+        return res.status(400).json({ error: 'Formato de ID de post inválido' })
+    }
 
     try {
         const postObjectId = new mongoose.Types.ObjectId(postId)
@@ -91,8 +95,6 @@ export const getPostComments = async (req: Request, res: Response) => {
         return res.status(200).json(response)
     } catch (error) {
         console.error(error)
-        return res
-            .status(500)
-            .json({ error: 'Erro ao buscar comentários do post' })
+        return res.status(500).json({ error: 'Erro ao buscar comentários do post' })
     }
 }
