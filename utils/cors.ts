@@ -1,7 +1,7 @@
 import { CorsOptions } from 'cors'
 
 export const corsOptions: CorsOptions = {
-    origin: 'http://nakedlove.eu',
+    origin: '*',
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     credentials: true,
 }
