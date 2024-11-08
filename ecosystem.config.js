@@ -2,7 +2,8 @@ module.exports = {
     apps: [
         {
             name: 'socialMediaBackEnd',
-            script: 'index.ts',
+            script: './dist/index.ts',
+            interpreter: 'node',
             env: {
                 PORT: process.env.PORT,
                 URL: process.env.URL,
