@@ -1,0 +1,28 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_1 = __importDefault(require("./auth"));
+const checkoutRoute_1 = __importDefault(require("./checkoutRoute"));
+const upload_1 = require("../middleware/upload");
+const stripe_1 = __importDefault(require("./stripe"));
+const stripeWebHook_1 = __importDefault(require("./stripeWebHook"));
+const primaryFeed_1 = __importDefault(require("./primaryFeed"));
+const secondFeed_1 = __importDefault(require("./secondFeed"));
+const resetPassword_1 = require("../controllers/users/resetPassword");
+const getAllusers_1 = require("../controllers/users/getAllusers");
+const getUserProfile_1 = require("../controllers/users/getUserProfile");
+const router = (0, express_1.Router)();
+router.use('/auth', auth_1.default);
+router.use('/primaryFeed', primaryFeed_1.default);
+router.use('/checkout', checkoutRoute_1.default);
+router.use('/upload', upload_1.uploadSingle);
+router.use('/stripe', stripe_1.default);
+router.use('/stripe-webhook', stripeWebHook_1.default);
+router.use('/secondFeed', secondFeed_1.default);
+router.post('/reset-password', resetPassword_1.forgotPassword);
+router.get('/users', getAllusers_1.getAllUsers);
+router.get('/users/:id', getUserProfile_1.getUserProfile);
+exports.default = router;
