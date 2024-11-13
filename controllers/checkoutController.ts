@@ -2,10 +2,10 @@ import {
     generateCheckoutByPlan,
     createPortalCustomer,
     getStripeCustomerByEmail,
-    stripe,
 } from '../utils/stripe'
 import { Request, Response } from 'express'
 import { userModel } from '../models/users'
+import mongoose from 'mongoose'
 
 export const createCheckout = async (req: Request, res: Response) => {
     try {
@@ -62,12 +62,16 @@ export const checkSubscriptionStatus = async (req: Request, res: Response) => {
         const id = req.params.id.trim()
         console.log('ID recebido:', id)
 
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'ID de usuário inválido.' })
+        }
+
         const user = await userModel.findById(id)
         console.log('Usuário encontrado:', user)
 
         if (!user) {
             return res.status(404).json({
-                message: 'Usuário não encontrado ou não associado ao Stripe.',
+                message: 'Usuário não encontrado.',
             })
         }
 
