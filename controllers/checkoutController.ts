@@ -59,19 +59,19 @@ export const createPortal = async (req: Request, res: Response) => {
 
 export const checkSubscriptionStatus = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params
+        const id = req.params.id.trim()
+        console.log('ID recebido:', id)
+
         const user = await userModel.findById(id)
+        console.log('Usuário encontrado:', user)
 
-        console.log('Usuario encontrado: ', user)
-
-        if (!user) {
+        if (!user || !user.stripeCustomerId) {
             return res.status(404).json({
                 message: 'Usuário não encontrado ou não associado ao Stripe.',
             })
         }
 
         const hasActiveSubscription = user.stripeSubscriptionStatus === 'active'
-
         return res.status(200).json({ hasActiveSubscription })
     } catch (error) {
         console.error('Erro ao verificar status da assinatura:', error)
