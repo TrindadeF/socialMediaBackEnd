@@ -59,8 +59,14 @@ export const createPortal = async (req: Request, res: Response) => {
 
 export const checkSubscriptionStatus = async (req: Request, res: Response) => {
     try {
-        const id = req.params.id.trim()
+        const id = req.params.id ? req.params.id.trim() : null
         console.log('ID recebido:', id)
+
+        if (!id) {
+            return res
+                .status(400)
+                .json({ message: 'ID do usuário não fornecido.' })
+        }
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: 'ID de usuário inválido.' })
