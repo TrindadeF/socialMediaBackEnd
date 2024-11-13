@@ -59,6 +59,8 @@ export const createPortal = async (req: Request, res: Response) => {
 
 export const checkSubscriptionStatus = async (req: Request, res: Response) => {
     try {
+        console.log('Parâmetros recebidos:', req.params)
+
         const id = req.params.id ? req.params.id.trim() : null
         console.log('ID recebido:', id)
 

@@ -41,6 +41,6 @@ router.post('/create-portal', async (req: Request, res: Response) => {
     }
 })
 
-router.get('/subscription-status/:userId', checkSubscriptionStatus)
+router.get('/subscription-status/:id', checkSubscriptionStatus)
 
 export default router
