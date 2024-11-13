@@ -19,7 +19,6 @@ router.post(
         const sig = req.headers['stripe-signature']
 
         let event
-
         try {
             event = stripe.webhooks.constructEvent(
                 req.body,
@@ -31,38 +30,48 @@ router.post(
             return res.status(400).send(`Webhook Error: ${err.message}`)
         }
 
-        switch (event.type) {
-            case 'checkout.session.completed':
-                await handleCheckoutSessionCompleted(event)
-                break
-            case 'invoice.payment_succeeded':
-                const invoice = event.data.object as Stripe.Invoice
-                const customerId = invoice.customer as string
-                const subscriptionId = invoice.subscription as string
+        try {
+            switch (event.type) {
+                case 'checkout.session.completed':
+                    await handleCheckoutSessionCompleted(event)
+                    break
 
-                const userExist = await userModel.findOne({
-                    stripeCustomerId: customerId,
-                })
+                case 'invoice.payment_succeeded':
+                    const invoice = event.data.object as Stripe.Invoice
+                    const customerId = invoice.customer as string
+                    const subscriptionId = invoice.subscription as string
 
-                if (!userExist) {
-                    console.error('User not found for customerId', customerId)
-                    return res.status(400).send('User not found')
-                }
+                    const userExist = await userModel.findOne({
+                        stripeCustomerId: customerId,
+                    })
 
-                userExist.stripeSubscriptionId = subscriptionId
-                userExist.stripeSubscriptionStatus = 'active'
-                await userExist.save()
+                    if (!userExist) {
+                        console.error(
+                            'User not found for customerId',
+                            customerId
+                        )
+                        return res.status(400).send('User not found')
+                    }
 
-                console.log(
-                    'Invoice paid successfully, user subscription updated'
-                )
-                break
+                    userExist.stripeSubscriptionId = subscriptionId
+                    userExist.stripeSubscriptionStatus = 'active'
+                    await userExist.save()
 
-            case 'customer.subscription.deleted':
-                await handleCancelPlan(event)
-                break
-            default:
-                console.log(`Unhandled event type: ${event.type}`)
+                    console.log(
+                        'Invoice paid successfully, user subscription status updated to active'
+                    )
+                    break
+
+                case 'customer.subscription.deleted':
+                    await handleCancelPlan(event)
+                    break
+
+                default:
+                    console.log(`Unhandled event type: ${event.type}`)
+            }
+        } catch (err) {
+            console.error('Error handling webhook event:', err)
+            return res.status(500).send('Webhook handler error')
         }
 
         res.json({ received: true })

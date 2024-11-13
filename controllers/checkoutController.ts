@@ -63,12 +63,9 @@ export const checkSubscriptionStatus = async (req: Request, res: Response) => {
         const user = await userModel.findById(id)
 
         if (!user || !user.stripeCustomerId) {
-            return res
-                .status(404)
-                .json({
-                    message:
-                        'Usuário não encontrado ou não associado ao Stripe.',
-                })
+            return res.status(404).json({
+                message: 'Usuário não encontrado ou não associado ao Stripe.',
+            })
         }
 
         const subscriptions = await stripe.subscriptions.list({
