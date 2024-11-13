@@ -31,6 +31,12 @@ export const generateCheckoutByPlan = async (
     try {
         const customer = await createStripeCustomer({ email })
 
+        const user = await userModel.findById(userId)
+        if (user && !user.stripeCustomerId) {
+            user.stripeCustomerId = customer.id
+            await user.save()
+        }
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'subscription',
