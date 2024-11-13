@@ -12,15 +12,15 @@ import { getUserProfile } from '../controllers/users/getUserProfile'
 
 const router = Router()
 
-router.use('/auth', auth)
-router.use('/primaryFeed', primaryFeed)
-router.use('/checkout', checkoutRoute)
-router.use('/upload', uploadSingle)
-router.use('/stripe', stripeRoute)
-router.use('/stripe-webhook', stripeWebHook)
-router.use('/secondFeed', secondFeed)
-router.post('/reset-password', forgotPassword)
-router.get('/users', getAllUsers)
-router.get('/users/:id', getUserProfile)
+router.use('/api/auth', auth)
+router.use('/api/primaryFeed', primaryFeed)
+router.use('/api/checkout', checkoutRoute)
+router.use('/api/upload', uploadSingle)
+router.use('/api/stripe', stripeRoute)
+router.use('/api/stripe-webhook', stripeWebHook)
+router.use('/api/secondFeed', secondFeed)
+router.post('/api/reset-password', forgotPassword)
+router.get('/api/users', getAllUsers)
+router.get('/api/users/:id', getUserProfile)
 
 export default router

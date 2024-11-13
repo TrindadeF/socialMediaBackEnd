@@ -24,13 +24,18 @@ const deleteComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!comment) {
             return res.status(404).json({ error: 'Comentário não encontrado' });
         }
+        const post = yield primaryFeed_1.default.findById(comment.postId);
+        if (!post) {
+            return res.status(404).json({ error: 'Post não encontrado' });
+        }
         yield comments_1.commentsModel.findByIdAndDelete(commentObjectId);
         yield primaryFeed_1.default.findByIdAndUpdate(comment.postId, {
             $pull: { comments: commentObjectId },
         });
         return res
             .status(200)
-            .json({ message: 'Comentário apagado com sucesso' });
+            .json({ message: 'Comentário apagado com sucesso',
+        });
     }
     catch (error) {
         console.error(error);

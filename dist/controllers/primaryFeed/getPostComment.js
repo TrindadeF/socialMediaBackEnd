@@ -24,9 +24,8 @@ const getPostComments = (req, res) => __awaiter(void 0, void 0, void 0, function
             .findById(postObjectId)
             .populate({
             path: 'owner',
-            select: 'nickName',
-        })
-            .populate('comments');
+            select: 'nickName profilePic',
+        });
         if (!post) {
             return res.status(404).json({ error: 'Post não encontrado' });
         }
@@ -40,6 +39,7 @@ const getPostComments = (req, res) => __awaiter(void 0, void 0, void 0, function
         const formattedComments = comments.map((comment) => {
             const commentOwner = comment.owner;
             return {
+                id: comment.id,
                 owner: {
                     _id: commentOwner._id.toString(),
                     profilePic: commentOwner.profilePic,
@@ -51,7 +51,11 @@ const getPostComments = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
         const response = {
             post: {
-                ownerName: postOwner.nickName,
+                owner: {
+                    _id: postOwner._id.toString(),
+                    nickName: postOwner.nickName,
+                    profilePic: postOwner.profilePic,
+                },
                 createdAt: post.createdAt,
                 content: post.content,
                 media: post.media,
@@ -62,9 +66,7 @@ const getPostComments = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (error) {
         console.error(error);
-        return res
-            .status(500)
-            .json({ error: 'Erro ao buscar comentários do post' });
+        return res.status(500).json({ error: 'Erro ao buscar comentários do post' });
     }
 });
 exports.getPostComments = getPostComments;

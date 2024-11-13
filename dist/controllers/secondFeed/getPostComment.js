@@ -18,6 +18,9 @@ const comments_1 = require("../../models/comments");
 const secondFeed_1 = __importDefault(require("../../models/secondFeed"));
 const getPostComments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { postId } = req.params;
+    if (!mongoose_1.default.Types.ObjectId.isValid(postId)) {
+        return res.status(400).json({ error: 'Formato de ID de post inválido' });
+    }
     try {
         const postObjectId = new mongoose_1.default.Types.ObjectId(postId);
         const post = yield secondFeed_1.default
@@ -65,9 +68,7 @@ const getPostComments = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (error) {
         console.error(error);
-        return res
-            .status(500)
-            .json({ error: 'Erro ao buscar comentários do post' });
+        return res.status(500).json({ error: 'Erro ao buscar comentários do post' });
     }
 });
 exports.getPostComments = getPostComments;
