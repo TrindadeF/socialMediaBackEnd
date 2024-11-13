@@ -68,12 +68,8 @@ export const checkSubscriptionStatus = async (req: Request, res: Response) => {
             })
         }
 
-        const subscriptions = await stripe.subscriptions.list({
-            customer: user.stripeCustomerId,
-            status: 'active',
-        })
+        const hasActiveSubscription = user.stripeSubscriptionStatus === 'active'
 
-        const hasActiveSubscription = subscriptions.data.length > 0
         return res.status(200).json({ hasActiveSubscription })
     } catch (error) {
         console.error('Erro ao verificar status da assinatura:', error)
