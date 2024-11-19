@@ -20,7 +20,14 @@ const fileFilter = (req: any, file: any, cb: any) => {
         'image/gif',
         'video/mp4',
         'video/mpeg',
-        'image/WEBP',
+        'image/webp',
+        'image/gif',
+        'image/bmp',
+        'image/tiff',
+        'image/svg',
+        'image/ico',
+        'image/heif',
+        'image/heic',
     ]
     if (!allowedTypes.includes(file.mimetype)) {
         return cb(
@@ -47,7 +54,7 @@ const upload = multer({
         },
     }),
     fileFilter: fileFilter,
-    limits: { fileSize: 10 * 1024 * 1024 },
+    limits: { fileSize: 60 * 1024 * 1024 },
 })
 
 export const uploadSingle = (req: any, res: any, next: any) => {
