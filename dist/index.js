@@ -33,6 +33,7 @@ app.use((0, cors_1.default)(cors_2.corsOptions));
 app.use((0, helmet_1.default)());
 app.use(limiter_1.limiter);
 app.use(express_1.default.json());
+app.set('trust proxy', 1);
 app.use(routes_1.default);
 io.on('connection', (socket) => {
     console.log('Um usuário conectado:', socket.id);

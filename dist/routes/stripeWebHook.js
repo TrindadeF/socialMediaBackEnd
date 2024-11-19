@@ -31,31 +31,37 @@ router.post('/webhook', express_2.default.raw({ type: 'application/json' }), (re
         console.error('Webhook signature verification failed.', err);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
-    switch (event.type) {
-        case 'checkout.session.completed':
-            yield (0, stripe_1.handleCheckoutSessionCompleted)(event);
-            break;
-        case 'invoice.payment_succeeded':
-            const invoice = event.data.object;
-            const customerId = invoice.customer;
-            const subscriptionId = invoice.subscription;
-            const userExist = yield users_1.userModel.findOne({
-                stripeCustomerId: customerId,
-            });
-            if (!userExist) {
-                console.error('User not found for customerId', customerId);
-                return res.status(400).send('User not found');
-            }
-            userExist.stripeSubscriptionId = subscriptionId;
-            userExist.stripeSubscriptionStatus = 'active';
-            yield userExist.save();
-            console.log('Invoice paid successfully, user subscription updated');
-            break;
-        case 'customer.subscription.deleted':
-            yield (0, stripe_1.handleCancelPlan)(event);
-            break;
-        default:
-            console.log(`Unhandled event type: ${event.type}`);
+    try {
+        switch (event.type) {
+            case 'checkout.session.completed':
+                yield (0, stripe_1.handleCheckoutSessionCompleted)(event);
+                break;
+            case 'invoice.payment_succeeded':
+                const invoice = event.data.object;
+                const customerId = invoice.customer;
+                const subscriptionId = invoice.subscription;
+                const userExist = yield users_1.userModel.findOne({
+                    stripeCustomerId: customerId,
+                });
+                if (!userExist) {
+                    console.error('User not found for customerId', customerId);
+                    return res.status(400).send('User not found');
+                }
+                userExist.stripeSubscriptionId = subscriptionId;
+                userExist.stripeSubscriptionStatus = 'active';
+                yield userExist.save();
+                console.log('Invoice paid successfully, user subscription status updated to active');
+                break;
+            case 'customer.subscription.deleted':
+                yield (0, stripe_1.handleCancelPlan)(event);
+                break;
+            default:
+                console.log(`Unhandled event type: ${event.type}`);
+        }
+    }
+    catch (err) {
+        console.error('Error handling webhook event:', err);
+        return res.status(500).send('Webhook handler error');
     }
     res.json({ received: true });
 }));

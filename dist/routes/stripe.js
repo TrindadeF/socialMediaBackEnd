@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const stripe_1 = require("../utils/stripe");
-const checkoutController_1 = require("../controllers/checkoutController");
+const checkoutController_1 = require("../controllers/stripe/checkoutController");
 const router = (0, express_1.Router)();
 router.post('/checkout/:plan', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId, email } = req.body;
