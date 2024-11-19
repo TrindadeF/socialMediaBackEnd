@@ -9,7 +9,8 @@ import secondFeed from './secondFeed'
 import { forgotPassword } from '../controllers/users/resetPassword'
 import { getAllUsers } from '../controllers/users/getAllusers'
 import { getUserProfile } from '../controllers/users/getUserProfile'
-import { syncSubscriptionStatus } from '../controllers/syncSubscription'
+import { syncSubscriptionStatus } from '../controllers/stripe/syncSubscription'
+import { cancelSubscription } from '../controllers/stripe/cancelSubscription'
 
 const router = Router()
 
@@ -24,5 +25,6 @@ router.post('/api/reset-password', forgotPassword)
 router.get('/api/users', getAllUsers)
 router.get('/api/users/:id', getUserProfile)
 router.post('/api/admin/sync-subscrition-status', syncSubscriptionStatus)
+router.delete('/api/cancel-subscription/:userId', cancelSubscription)
 
 export default router

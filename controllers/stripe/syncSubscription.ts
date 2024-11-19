@@ -1,5 +1,5 @@
-import { stripe } from '../utils/stripe'
-import { userModel } from '../models/users'
+import { stripe } from '../../utils/stripe'
+import { userModel } from '../../models/users'
 
 export const syncSubscriptionStatus = async () => {
     try {

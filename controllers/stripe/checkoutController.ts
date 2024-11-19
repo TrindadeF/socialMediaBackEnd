@@ -2,9 +2,9 @@ import {
     generateCheckoutByPlan,
     createPortalCustomer,
     getStripeCustomerByEmail,
-} from '../utils/stripe'
+} from '../../utils/stripe'
 import { Request, Response } from 'express'
-import { userModel } from '../models/users'
+import { userModel } from '../../models/users'
 import mongoose from 'mongoose'
 
 export const createCheckout = async (req: Request, res: Response) => {
