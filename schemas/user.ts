@@ -33,6 +33,7 @@ export const userSchema = new Schema<User>({
         ],
         default: null,
     },
+    stripeCustomerId: { type: String, default: null },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Number },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

@@ -2,10 +2,10 @@ import {
     generateCheckoutByPlan,
     createPortalCustomer,
     getStripeCustomerByEmail,
-    stripe,
-} from '../utils/stripe'
+} from '../../utils/stripe'
 import { Request, Response } from 'express'
-import { userModel } from '../models/users'
+import { userModel } from '../../models/users'
+import mongoose from 'mongoose'
 
 export const createCheckout = async (req: Request, res: Response) => {
     try {
@@ -59,24 +59,31 @@ export const createPortal = async (req: Request, res: Response) => {
 
 export const checkSubscriptionStatus = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params
-        const user = await userModel.findById(id)
+        console.log('Parâmetros recebidos:', req.params)
 
-        if (!user || !user.stripeCustomerId) {
+        const id = req.params.id ? req.params.id.trim() : null
+        console.log('ID recebido:', id)
+
+        if (!id) {
             return res
-                .status(404)
-                .json({
-                    message:
-                        'Usuário não encontrado ou não associado ao Stripe.',
-                })
+                .status(400)
+                .json({ message: 'ID do usuário não fornecido.' })
         }
 
-        const subscriptions = await stripe.subscriptions.list({
-            customer: user.stripeCustomerId,
-            status: 'active',
-        })
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'ID de usuário inválido.' })
+        }
 
-        const hasActiveSubscription = subscriptions.data.length > 0
+        const user = await userModel.findById(id)
+        console.log('Usuário encontrado:', user)
+
+        if (!user) {
+            return res.status(404).json({
+                message: 'Usuário não encontrado.',
+            })
+        }
+
+        const hasActiveSubscription = user.stripeSubscriptionStatus === 'active'
         return res.status(200).json({ hasActiveSubscription })
     } catch (error) {
         console.error('Erro ao verificar status da assinatura:', error)

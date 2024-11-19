@@ -31,13 +31,19 @@ export const generateCheckoutByPlan = async (
     try {
         const customer = await createStripeCustomer({ email })
 
+        const user = await userModel.findById(userId)
+        if (user && !user.stripeCustomerId) {
+            user.stripeCustomerId = customer.id
+            await user.save()
+        }
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'subscription',
             client_reference_id: userId,
             customer: customer.id,
-            success_url: `http://localhost:3000/done`,
-            cancel_url: `http://localhost:3000/error`,
+            success_url: `https://nakedlove.eu/api/payments`,
+            cancel_url: `https://nakedlove.eu/api/payments`,
             line_items: [
                 {
                     price: planId,
@@ -126,7 +132,7 @@ export const handleCancelSubscription = async (idSubscriptions: string) => {
 export const createPortalCustomer = async (idCustomer: string) => {
     const session = await stripe.billingPortal.sessions.create({
         customer: idCustomer,
-        return_url: 'http://localhost:3000/',
+        return_url: 'https://nakedlove.eu/api/payments',
     })
 
     return session

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { generateCheckoutByPlan, createPortalCustomer } from '../utils/stripe'
-import { checkSubscriptionStatus } from '../controllers/checkoutController'
+import { checkSubscriptionStatus } from '../controllers/stripe/checkoutController'
 
 const router = Router()
 
