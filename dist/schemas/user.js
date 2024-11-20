@@ -57,6 +57,7 @@ exports.userSchema = new mongoose_1.Schema({
         ],
         default: null,
     },
+    stripeCustomerId: { type: String, default: null },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Number },
     likes: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User' }],
