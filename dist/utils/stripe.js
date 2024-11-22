@@ -36,13 +36,18 @@ exports.createStripeCustomer = createStripeCustomer;
 const generateCheckoutByPlan = (userId, email, planId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const customer = yield (0, exports.createStripeCustomer)({ email });
+        const user = yield users_1.userModel.findById(userId);
+        if (user && !user.stripeCustomerId) {
+            user.stripeCustomerId = customer.id;
+            yield user.save();
+        }
         const session = yield exports.stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'subscription',
             client_reference_id: userId,
             customer: customer.id,
-            success_url: `http://localhost:3000/done`,
-            cancel_url: `http://localhost:3000/error`,
+            success_url: `https://nakedlove.eu/api/payments`,
+            cancel_url: `https://nakedlove.eu/api/payments`,
             line_items: [
                 {
                     price: planId,
@@ -112,7 +117,7 @@ exports.handleCancelSubscription = handleCancelSubscription;
 const createPortalCustomer = (idCustomer) => __awaiter(void 0, void 0, void 0, function* () {
     const session = yield exports.stripe.billingPortal.sessions.create({
         customer: idCustomer,
-        return_url: 'http://localhost:3000/',
+        return_url: 'https://nakedlove.eu/api/payments',
     });
     return session;
 });

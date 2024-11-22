@@ -82,7 +82,7 @@ export const getPostComments = async (req: Request, res: Response) => {
 
         const response: IPostCommentsResponse = {
             post: {
-                ownerId: postOwner._id,
+                ownerId: postOwner._id.toString(),
                 ownerName: postOwner.nickName,
                 createdAt: post.createdAt,
                 content: post.content,
@@ -95,6 +95,8 @@ export const getPostComments = async (req: Request, res: Response) => {
         return res.status(200).json(response)
     } catch (error) {
         console.error(error)
-        return res.status(500).json({ error: 'Erro ao buscar comentários do post' })
+        return res
+            .status(500)
+            .json({ error: 'Erro ao buscar comentários do post' })
     }
 }

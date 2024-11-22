@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkSubscriptionStatus = exports.createPortal = exports.createCheckout = void 0;
-const stripe_1 = require("../utils/stripe");
-const users_1 = require("../models/users");
+const stripe_1 = require("../../utils/stripe");
+const users_1 = require("../../models/users");
 const mongoose_1 = __importDefault(require("mongoose"));
 const createCheckout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
