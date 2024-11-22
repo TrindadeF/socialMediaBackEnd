@@ -42,6 +42,8 @@ export type User = {
     matches: ObjectId[]
     followers: ObjectId[]
     following: ObjectId[]
+    isAnonymous?: boolean;
+    
 }
 
 export type Message = {
