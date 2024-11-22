@@ -5,7 +5,7 @@ import { FileWithLocation } from '../../types';
 
 export const updateUser = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { name, age, gender, email, nickName, description, isAnonymous } = req.body; // Incluindo isAnonymous
+    const { name, age, gender, email, nickName, description, isAnonymous } = req.body; 
 
     const file = req.file as FileWithLocation;
     const profilePicUrl = file?.location || req.body.profilePicUrl;
@@ -27,7 +27,11 @@ export const updateUser = async (req: Request, res: Response) => {
     if (description) updateData.description = description;
     if (profilePicUrl) updateData.profilePic = profilePicUrl;
     if (isAnonymous !== undefined) updateData.isAnonymous = isAnonymous; 
-
+    if (!isAnonymous) {
+        if (name) updateData.name = name;
+        if (age) updateData.age = age;
+        if (description) updateData.description = description;
+    }
     try {
         if (Object.keys(updateData).length === 0) {
             return res

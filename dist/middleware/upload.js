@@ -23,7 +23,14 @@ const fileFilter = (req, file, cb) => {
         'image/gif',
         'video/mp4',
         'video/mpeg',
-        'image/WEBP',
+        'image/webp',
+        'image/gif',
+        'image/bmp',
+        'image/tiff',
+        'image/svg',
+        'image/ico',
+        'image/heif',
+        'image/heic',
     ];
     if (!allowedTypes.includes(file.mimetype)) {
         return cb(new Error('Tipo de arquivo não permitido. Apenas imagens e vídeos são aceitos.'), false);
@@ -44,7 +51,7 @@ const upload = (0, multer_1.default)({
         },
     }),
     fileFilter: fileFilter,
-    limits: { fileSize: 10 * 1024 * 1024 },
+    limits: { fileSize: 60 * 1024 * 1024 },
 });
 const uploadSingle = (req, res, next) => {
     upload.single('image')(req, res, (err) => {
