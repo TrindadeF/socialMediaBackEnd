@@ -55,7 +55,7 @@ const getPostComments = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
         const response = {
             post: {
-                ownerId: postOwner._id,
+                ownerId: postOwner._id.toString(),
                 ownerName: postOwner.nickName,
                 createdAt: post.createdAt,
                 content: post.content,
@@ -68,7 +68,9 @@ const getPostComments = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'Erro ao buscar comentários do post' });
+        return res
+            .status(500)
+            .json({ error: 'Erro ao buscar comentários do post' });
     }
 });
 exports.getPostComments = getPostComments;
