@@ -1,5 +1,5 @@
-import mongoose, { Schema } from 'mongoose'
-import { User } from '../database'
+import mongoose, { Schema } from 'mongoose';
+import { User } from '../database';
 
 export const userSchema = new Schema<User>({
     name: { type: 'String', required: true },
@@ -40,4 +40,5 @@ export const userSchema = new Schema<User>({
     matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-})
+    isAnonymous: { type: Boolean, default: false }, 
+});
