@@ -13,7 +13,7 @@ exports.getAllUsers = void 0;
 const users_1 = require("../../models/users");
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield users_1.userModel.find(); // Busca todos os usuários
+        const users = yield users_1.userModel.find();
         res.status(200).json(users);
     }
     catch (error) {

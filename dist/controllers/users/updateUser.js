@@ -14,7 +14,7 @@ const users_1 = require("../../models/users");
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { id } = req.params;
-    const { name, age, gender, email, nickName, description } = req.body;
+    const { name, age, gender, email, nickName, description, isAnonymous } = req.body;
     const file = req.file;
     const profilePicUrl = (file === null || file === void 0 ? void 0 : file.location) || req.body.profilePicUrl;
     const userIdFromToken = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
@@ -36,8 +36,17 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         updateData.nickName = nickName;
     if (description)
         updateData.description = description;
-    if (profilePicUrl) {
+    if (profilePicUrl)
         updateData.profilePic = profilePicUrl;
+    if (isAnonymous !== undefined)
+        updateData.isAnonymous = isAnonymous;
+    if (!isAnonymous) {
+        if (name)
+            updateData.name = name;
+        if (age)
+            updateData.age = age;
+        if (description)
+            updateData.description = description;
     }
     try {
         if (Object.keys(updateData).length === 0) {
