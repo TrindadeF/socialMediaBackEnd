@@ -137,3 +137,36 @@ export const createPortalCustomer = async (idCustomer: string) => {
 
     return session
 }
+
+const handleSubscriptionStatus = async (event: Stripe.Event) => {
+    const subscription = event.data.object as Stripe.Subscription
+
+    const stripeCustomerId = subscription.customer as string
+    const subscriptionId = subscription.id
+    const status = subscription.status
+
+    console.log(
+        `Evento recebido: ${event.type}. Status da assinatura: ${status}`
+    )
+
+    try {
+        const user = await userModel.findOne({ stripeCustomerId })
+
+        if (!user) {
+            console.error(
+                `Usuário não encontrado para Stripe Customer ID: ${stripeCustomerId}`
+            )
+            return
+        }
+
+        user.stripeSubscriptionId = subscriptionId
+        user.stripeSubscriptionStatus = status
+        await user.save()
+
+        console.log(
+            `Status da assinatura atualizado para o usuário: ${user.email} - Status: ${status}`
+        )
+    } catch (error) {
+        console.error('Erro ao processar o evento de assinatura:', error)
+    }
+}

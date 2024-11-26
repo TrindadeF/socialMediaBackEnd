@@ -8,9 +8,7 @@ import {
 
 const router = express.Router()
 
-const stripe = new Stripe(process.env.STRIPE_SECRET as string, {
-    apiVersion: '2024-09-30.acacia',
-})
+const stripe = new Stripe(process.env.STRIPE_SECRET as string)
 
 router.post(
     '/webhook',
