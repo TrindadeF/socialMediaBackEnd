@@ -3,7 +3,8 @@ import PostModel from '../../models/secondFeed'
 
 export const deletePost = async (req: Request, res: Response) => {
     try {
-        const postId = req.params.id
+        const postId = req.params.postId;
+        
 
         const post = await PostModel.findByIdAndDelete(postId)
         if (!post) {

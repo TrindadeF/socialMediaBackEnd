@@ -15,7 +15,7 @@ import { deleteComment } from '../controllers/secondFeed/deleteComments'
 const router = Router()
 
 router.get('/', getPosts)
-router.delete('/:id', authBody, deletePost)
+router.delete('/:postid', authBody, deletePost)
 router.post('/', authBody, uploadSingle, createPost)
 router.put('/:id', validBody)
 router.post('/:postId/like', authBody, likePost)
