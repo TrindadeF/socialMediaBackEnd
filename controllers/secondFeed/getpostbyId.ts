@@ -24,7 +24,7 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
                 _id: post._id,
                 ownerName: owner.nickName,
                 ownerProfileImageUrl: owner.profilePic,
-                postOwnerId: owner._id,
+                postOwnerId: owner._id.toString(),
                 content: post.content,
                 createdAt: post.createdAt,
                 media: post.media,
