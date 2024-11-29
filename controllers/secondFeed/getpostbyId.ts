@@ -15,6 +15,7 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
 
         const postsWithLikes = posts.map((post) => {
             const owner = post.owner as unknown as {
+                _id: string
                 nickName: string
                 profilePic: string
             }
@@ -23,6 +24,7 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
                 _id: post._id,
                 ownerName: owner.nickName,
                 ownerProfileImageUrl: owner.profilePic,
+                postOwnerId: owner._id,
                 content: post.content,
                 createdAt: post.createdAt,
                 media: post.media,
