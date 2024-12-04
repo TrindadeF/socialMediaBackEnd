@@ -10,6 +10,11 @@ export const secondPost = new Schema({
         ref: 'User',
         required: true,
     },
+    postOwnerId: {  
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     media: {
         type: [String],
         default: [],
