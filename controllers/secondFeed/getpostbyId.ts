@@ -9,7 +9,7 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
 
         const posts = await secondFeedModel
             .find(filter)
-            .populate('owner', 'nickName profilePic')
+            .populate('owner', '_id nickName profilePic')
             .populate('comments.owner', 'nickName')
             .exec()
 
