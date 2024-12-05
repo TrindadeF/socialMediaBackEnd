@@ -24,11 +24,11 @@ export const getPosts = async (req: Request, res: Response) => {
                 _id: post._id,
                 ownerName: owner.nickName,
                 ownerProfileImageUrl: owner.profilePic,
-                postOwnerId: post.owner._id,
                 content: post.content,
                 createdAt: post.createdAt,
                 media: post.media,
                 likes: post.likes,
+                owner: post.owner,
             }
         })
 

@@ -29,6 +29,7 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
                 createdAt: post.createdAt,
                 media: post.media,
                 likes: post.likes.length,
+                owner: post.owner,
             }
         })
 
