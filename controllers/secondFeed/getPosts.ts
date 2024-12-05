@@ -11,7 +11,7 @@ export const getPosts = async (req: Request, res: Response) => {
         }
 
         const posts = await PostModel.find(filter)
-            .populate('owner', 'nickName profilePic _id id')
+            .populate('owner', '_id nickName profilePic')
             .exec()
 
         const postsWithLikes = posts.map((post) => {
@@ -24,15 +24,14 @@ export const getPosts = async (req: Request, res: Response) => {
 
             return {
                 _id: post._id,
-                idDono: owner._id,
-                idDono2: owner.id,
                 ownerName: owner.nickName,
                 ownerProfileImageUrl: owner.profilePic,
+                postOwnerId: owner._id,
                 content: post.content,
                 createdAt: post.createdAt,
                 media: post.media,
                 likes: post.likes,
-                owner: post.owner,
+                
             }
         })
 

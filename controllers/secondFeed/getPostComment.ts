@@ -41,7 +41,7 @@ export const getPostComments = async (req: Request, res: Response) => {
             .findById(postObjectId)
             .populate({
                 path: 'owner',
-                select: 'nickName _id',
+                select:  '_id',
             })
             .populate('comments')
 
