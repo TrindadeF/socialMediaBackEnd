@@ -14,6 +14,7 @@ export type primaryFeed = {
 export type secondFeed = {
     content: string
     owner: ObjectId
+    postOwnerId: string
     createdAt: Date
     likes: string[]
     ownerName: string
