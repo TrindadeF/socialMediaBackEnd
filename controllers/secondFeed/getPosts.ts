@@ -11,17 +11,21 @@ export const getPosts = async (req: Request, res: Response) => {
         }
 
         const posts = await PostModel.find(filter)
-            .populate('owner', 'nickName profilePic')
+            .populate('owner', 'nickName profilePic _id id')
             .exec()
 
         const postsWithLikes = posts.map((post) => {
             const owner = post.owner as unknown as {
                 nickName: string
                 profilePic: string
+                _id: string
+                id: string
             }
 
             return {
                 _id: post._id,
+                idDono: owner._id,
+                idDono2: owner.id,
                 ownerName: owner.nickName,
                 ownerProfileImageUrl: owner.profilePic,
                 content: post.content,
