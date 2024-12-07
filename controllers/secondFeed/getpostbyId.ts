@@ -10,7 +10,7 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
         const posts = await secondFeedModel
             .find(filter)
             .populate('owner', '_id nickName profilePic')
-            .populate('comments.owner', 'nickName')
+            .populate('comments.owner', '_id nickName')
             .exec()
 
         const postsWithLikes = posts.map((post) => {
@@ -22,20 +22,31 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
 
             return {
                 _id: post._id,
-                ownerName: owner.nickName,
-                ownerProfileImageUrl: owner.profilePic,
-                postOwnerId: owner._id.toString(),
+                owner: {
+                    _id: owner._id,
+                    nickName: owner.nickName,
+                    profilePic: owner.profilePic,
+                },
                 content: post.content,
                 createdAt: post.createdAt,
                 media: post.media,
-                likes: post.likes.length,
-                
+                likesCount: Array.isArray(post.likes) ? post.likes.length : 0,
+                comments: post.comments.map((comment: any) => ({
+                    _id: comment._id,
+                    text: comment.text,
+                    owner: {
+                        _id: comment.owner._id,
+                        nickName: comment.owner.nickName,
+                    },
+                })),
             }
         })
 
         return res.status(200).json(postsWithLikes)
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({ error: 'Erro ao buscar posts' })
+    } catch (error: any) {
+        console.error('Erro ao buscar posts:', error)
+        return res
+            .status(500)
+            .json({ error: 'Erro ao buscar posts', details: error.message })
     }
 }
