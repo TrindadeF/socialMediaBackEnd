@@ -6,14 +6,12 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
         const userId = req.query.userId as string | undefined
 
         const filter = userId ? { owner: userId } : {}
-
         const posts = await secondFeedModel
             .find(filter)
             .populate('owner', '_id nickName profilePic')
             .populate('comments.owner', '_id nickName')
             .exec()
-
-        const postsWithLikes = posts.map((post) => {
+        const postsWithDetails = posts.map((post) => {
             const owner = post.owner as unknown as {
                 _id: string
                 nickName: string
@@ -42,7 +40,7 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
             }
         })
 
-        return res.status(200).json(postsWithLikes)
+        return res.status(200).json(postsWithDetails)
     } catch (error: any) {
         console.error('Erro ao buscar posts:', error)
         return res
