@@ -21,7 +21,7 @@ export const getPosts = async (req: Request, res: Response) => {
             return {
                 _id: post._id,
                 owner: {
-                    _id: owner._id,
+                    _id: owner._id.toString(),
                     nickName: owner.nickName,
                     profilePic: owner.profilePic,
                 },
