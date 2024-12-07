@@ -43,8 +43,13 @@ export type User = {
     matches: ObjectId[]
     followers: ObjectId[]
     following: ObjectId[]
-    isAnonymous?: boolean;
-    
+    isAnonymous?: boolean
+    blockedUsers: ObjectId[]
+    reports: {
+        reportedBy: ObjectId
+        reason: string
+        createdAt: Date
+    }[]
 }
 
 export type Message = {
