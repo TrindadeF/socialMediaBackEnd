@@ -22,8 +22,7 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
 
         const postsWithDetails = posts.map((post) => {
             if (!post.owner) {
-                console.warn(`Post sem owner populado: ${post._id}`)
-                throw new Error('Owner não encontrado para um ou mais posts')
+                throw new Error(`Owner não encontrado para o post ${post._id}`)
             }
 
             const owner = post.owner as unknown as {
@@ -43,25 +42,16 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
                 createdAt: post.createdAt,
                 media: post.media,
                 likesCount: Array.isArray(post.likes) ? post.likes.length : 0,
-                comments: post.comments.map((comment: any) => {
-                    if (!comment.owner) {
-                        console.warn(`Comentário sem owner: ${comment._id}`)
-                        return {
-                            _id: comment._id,
-                            text: comment.text,
-                            owner: null,
-                        }
-                    }
-
-                    return {
-                        _id: comment._id,
-                        text: comment.text,
-                        owner: {
-                            _id: comment.owner._id,
-                            nickName: comment.owner.nickName,
-                        },
-                    }
-                }),
+                comments: post.comments.map((comment: any) => ({
+                    _id: comment._id,
+                    text: comment.text,
+                    owner: comment.owner
+                        ? {
+                              _id: comment.owner._id,
+                              nickName: comment.owner.nickName,
+                          }
+                        : null,
+                })),
             }
         })
 
