@@ -4,7 +4,6 @@ import secondFeedModel from '../../models/secondFeed'
 export const getPostsByUserId = async (req: Request, res: Response) => {
     try {
         const userId = req.query.userId as string | undefined
-
         const filter = userId ? { owner: userId } : {}
 
         console.log('Filtro aplicado:', filter)
@@ -19,9 +18,14 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
             .populate('comments.owner', '_id nickName')
             .exec()
 
-        console.log('Posts encontrados:', posts)
+        console.log('Posts encontrados (direto do banco):', posts)
 
         const postsWithDetails = posts.map((post) => {
+            if (!post.owner) {
+                console.warn(`Post sem owner populado: ${post._id}`)
+                throw new Error('Owner não encontrado para um ou mais posts')
+            }
+
             const owner = post.owner as unknown as {
                 _id: string
                 nickName: string
@@ -39,14 +43,25 @@ export const getPostsByUserId = async (req: Request, res: Response) => {
                 createdAt: post.createdAt,
                 media: post.media,
                 likesCount: Array.isArray(post.likes) ? post.likes.length : 0,
-                comments: post.comments.map((comment: any) => ({
-                    _id: comment._id,
-                    text: comment.text,
-                    owner: {
-                        _id: comment.owner._id,
-                        nickName: comment.owner.nickName,
-                    },
-                })),
+                comments: post.comments.map((comment: any) => {
+                    if (!comment.owner) {
+                        console.warn(`Comentário sem owner: ${comment._id}`)
+                        return {
+                            _id: comment._id,
+                            text: comment.text,
+                            owner: null,
+                        }
+                    }
+
+                    return {
+                        _id: comment._id,
+                        text: comment.text,
+                        owner: {
+                            _id: comment.owner._id,
+                            nickName: comment.owner.nickName,
+                        },
+                    }
+                }),
             }
         })
 
