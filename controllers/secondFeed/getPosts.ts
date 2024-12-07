@@ -8,7 +8,11 @@ export const getPosts = async (req: Request, res: Response) => {
         const filter = userId ? { owner: userId } : {}
 
         const posts = await PostModel.find(filter)
-            .populate('owner', '_id nickName profilePic')
+            .populate({
+                path: 'owner',
+                select: 'nickName profilePic _id',
+                match: { nickName: { $exists: true } },
+            })
             .exec()
 
         const postsWithLikes = posts.map((post) => {
