@@ -3,12 +3,9 @@ import PostModel from '../../models/secondFeed'
 
 export const getPosts = async (req: Request, res: Response) => {
     try {
-        const userId = req.query.userId
+        const userId = req.query.userId as string
 
-        let filter = {}
-        if (userId) {
-            filter = { owner: userId }
-        }
+        const filter = userId ? { owner: userId } : {}
 
         const posts = await PostModel.find(filter)
             .populate('owner', '_id nickName profilePic')
@@ -19,7 +16,6 @@ export const getPosts = async (req: Request, res: Response) => {
                 nickName: string
                 profilePic: string
                 _id: string
-                id: string
             }
 
             return {
@@ -36,13 +32,15 @@ export const getPosts = async (req: Request, res: Response) => {
                 createdAt: post.createdAt,
                 media: post.media,
                 likes: post.likes,
-                
             }
         })
 
         return res.status(200).json(postsWithLikes)
-    } catch (error) {
-        console.error(error)
-        return res.status(400).json({ error: 'Erro ao buscar posts' })
+    } catch (error: any) {
+        console.error('Erro ao buscar posts:', error.message || error)
+        return res.status(400).json({
+            error: 'Erro ao buscar posts',
+            details: error.message || null,
+        })
     }
 }
