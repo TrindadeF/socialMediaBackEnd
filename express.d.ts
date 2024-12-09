@@ -4,6 +4,7 @@ declare global {
     namespace Express {
         interface Request {
             user?: {
+                [x: string]: any
                 id: string
                 email: string
             }
