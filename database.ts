@@ -28,6 +28,7 @@ export type User = {
     name: string
     age: number
     profilePic: string
+    media: [string]
     email: string
     gender: Gender
     password: string

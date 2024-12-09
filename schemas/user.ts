@@ -5,6 +5,8 @@ export const userSchema = new Schema<User>({
     name: { type: 'String', required: true },
     age: { type: 'Number', required: true },
     profilePic: { type: 'String', default: 'default' },
+    media: {type: [String], default: [] },
+
     gender: { type: 'String', enum: ['M', 'F', 'NB', 'BI', 'TR', 'HOM'] },
     email: {
         type: 'String',
