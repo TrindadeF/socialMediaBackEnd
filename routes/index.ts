@@ -7,7 +7,7 @@ import stripeWebHook from './stripeWebHook'
 import primaryFeed from './primaryFeed'
 import secondFeed from './secondFeed'
 import { forgotPassword } from '../controllers/users/resetPassword'
-import { getAllUsers } from '../controllers/users/getAllusers'
+import { getAllUsersWithPosts } from '../controllers/users/getAllusers'
 import { getUserProfile } from '../controllers/users/getUserProfile'
 import { syncSubscriptionStatus } from '../controllers/stripe/syncSubscription'
 import { cancelSubscription } from '../controllers/stripe/cancelSubscription'
@@ -22,7 +22,7 @@ router.use('/api/stripe', stripeRoute)
 router.use('/api/stripe-webhook', stripeWebHook)
 router.use('/api/secondFeed', secondFeed)
 router.post('/api/reset-password', forgotPassword)
-router.get('/api/users', getAllUsers)
+router.get('/api/users', getAllUsersWithPosts)
 router.get('/api/users/:id', getUserProfile)
 router.post('/api/admin/sync-subscrition-status', syncSubscriptionStatus)
 router.delete('/api/cancel-subscription/:userId', cancelSubscription)

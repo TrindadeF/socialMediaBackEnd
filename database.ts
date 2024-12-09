@@ -51,6 +51,8 @@ export type User = {
         reason: string
         createdAt: Date
     }[]
+    primaryPosts: ObjectId[]
+    secondPosts: ObjectId[]
 }
 
 export type Message = {

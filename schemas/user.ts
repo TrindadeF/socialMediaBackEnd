@@ -5,7 +5,7 @@ export const userSchema = new Schema<User>({
     name: { type: 'String', required: true },
     age: { type: 'Number', required: true },
     profilePic: { type: 'String', default: 'default' },
-    media: {type: [String], default: [] },
+    media: { type: [String], default: [] },
 
     gender: { type: 'String', enum: ['M', 'F', 'NB', 'BI', 'TR', 'HOM'] },
     email: {
@@ -51,4 +51,8 @@ export const userSchema = new Schema<User>({
             createdAt: { type: Date, default: Date.now },
         },
     ],
+    primaryPosts: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'PrimaryFeed' },
+    ],
+    secondPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'SecondFeed' }],
 })
