@@ -11,10 +11,6 @@ export const blockUser = async (req: Request, res: Response) => {
         const userId = req.user.id
         const { blockUserId } = req.params
 
-        if (!mongoose.Types.ObjectId.isValid(blockUserId)) {
-            return res.status(400).json({ message: 'ID inválido.' })
-        }
-
         const blockUserObjectId = new mongoose.Types.ObjectId(blockUserId)
 
         const user = await userModel.findById(userId)
