@@ -45,6 +45,6 @@ router.post('/chats', authBody, getOrCreateChatByParticipants)
 router.post('/profile/:targetUserId/follow', authBody, followUser)
 router.get('/profile/:userId/isFollowing/:targetUserId', isFollowing)
 router.post('/report', authBody, reportUser)
-router.post('/block', authBody, blockUser)
+router.post('/block/:blockUserId', authBody, blockUser)
 
 export default router
