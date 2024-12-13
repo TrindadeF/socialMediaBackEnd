@@ -23,7 +23,8 @@ import { followUser } from '../controllers/users/followUser'
 import { isFollowing } from '../controllers/users/isFollowing'
 import { getOrCreateChatByParticipants } from '../controllers/chat/getChat'
 import { reportUser } from '../controllers/users/reportUser'
-import { blockUser } from '../controllers/users/blockUser'
+import { blockUser,unblockUser } from '../controllers/users/blockUser'
+
 
 const router = Router()
 
@@ -46,5 +47,6 @@ router.post('/profile/:targetUserId/follow', authBody, followUser)
 router.get('/profile/:userId/isFollowing/:targetUserId', isFollowing)
 router.post('/report', authBody, reportUser)
 router.post('/block/:blockUserId', authBody, blockUser)
+router.post('/unblock/:unblockUserId', authBody, unblockUser)
 
 export default router
