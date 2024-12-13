@@ -46,6 +46,7 @@ export type User = {
     following: ObjectId[]
     isAnonymous?: boolean
     blockedUsers: ObjectId[]
+    unblockedUsers: ObjectId[]
     reports: {
         reportedBy: ObjectId
         reason: string
