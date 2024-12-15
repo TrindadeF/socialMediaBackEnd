@@ -1,19 +1,32 @@
 import { Request, Response } from 'express'
 import PostModel from '../../models/primaryFeed'
+import { userModel } from '../../models/users'
 
 export const getPosts = async (req: Request, res: Response) => {
     try {
+        const userId = req.user
+
+        const user = await userModel
+            .findById(userId)
+            .select('blockedUsers')
+            .exec()
+        const blockedUsers = user?.blockedUsers || []
+
         const posts = await PostModel.find()
             .populate({
                 path: 'owner',
                 select: 'nickName profilePic',
-                match: { nickName: { $exists: true } },
+                match: {
+                    _id: { $nin: blockedUsers },
+                    nickName: { $exists: true },
+                },
             })
             .populate({
                 path: 'comments',
                 populate: {
                     path: 'owner',
                     select: 'nickName profilePic',
+                    match: { _id: { $nin: blockedUsers } },
                 },
             })
             .exec()
@@ -26,13 +39,13 @@ export const getPosts = async (req: Request, res: Response) => {
                     profilePic: string
                 }
 
-                const formattedComments = (post.comments as any[]).map(
-                    (comment) => {
+                const formattedComments = ((post.comments as any[]) || [])
+                    .filter((comment) => comment.owner)
+                    .map((comment) => {
                         const commentOwner = comment.owner as {
                             nickName: string
                             profilePic: string
                         }
-
                         return {
                             _id: comment._id,
                             content: comment.content,
@@ -42,8 +55,7 @@ export const getPosts = async (req: Request, res: Response) => {
                                 profilePic: commentOwner.profilePic,
                             },
                         }
-                    }
-                )
+                    })
 
                 return {
                     _id: post._id,
@@ -60,7 +72,7 @@ export const getPosts = async (req: Request, res: Response) => {
 
         return res.status(200).json(postsWithComments)
     } catch (error) {
-        console.error(error)
+        console.error('Error fetching posts:', error)
         return res.status(400).json({ error: 'Erro ao buscar posts' })
     }
 }
