@@ -30,7 +30,7 @@ export const forgotPassword = async (
         user.resetPasswordExpires = Date.now() + 3600000
         await user.save()
 
-        const resetLink = `http://localhost:4200/reset-password/${token}`
+        const resetLink = `https://nakedlove.eu/api/reset-password/${token}`
         const mailOptions = {
             from: 'nakedlove.service@gmail.com',
             to: user.email,
