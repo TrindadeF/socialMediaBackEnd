@@ -39,6 +39,7 @@ export const userSchema = new Schema<User>({
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Number },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    
     matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -55,4 +56,10 @@ export const userSchema = new Schema<User>({
         { type: mongoose.Schema.Types.ObjectId, ref: 'PrimaryFeed' },
     ],
     secondPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'SecondFeed' }],
+    notifications: [
+        {
+            message: { type: String, required: true },
+            date: { type: Date, default: Date.now }
+        }
+    ]
 })

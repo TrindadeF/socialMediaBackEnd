@@ -54,6 +54,10 @@ export type User = {
     }[]
     primaryPosts: ObjectId[]
     secondPosts: ObjectId[]
+    notifications: Array<{
+        message: string;
+        date: Date;
+      }>;
 }
 
 export type Message = {

@@ -33,7 +33,7 @@ export const blockUser = async (req: Request, res: Response) => {
                 .json({ message: 'Usuário a ser bloqueado não encontrado.' })
         }
 
-        // Verificar se o usuário já está bloqueado
+        
         if (user.blockedUsers.some((id) => id.toString() === blockUserId)) {
             return res
                 .status(400)
@@ -83,13 +83,13 @@ export const unblockUser = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'Usuário a ser desbloqueado não encontrado.' });
         }
 
-        // Verificar se o usuário está realmente bloqueado
+        
         const isBlocked = user.blockedUsers.some((id) => id.toString() === unblockUserId);
         if (!isBlocked) {
             return res.status(400).json({ message: 'Usuário não está bloqueado.' });
         }
 
-        // Remover o usuário da lista de bloqueados
+        
         user.blockedUsers = user.blockedUsers.filter((id) => id.toString() !== unblockUserId);
         await user.save();
 
