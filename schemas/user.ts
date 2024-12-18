@@ -56,10 +56,4 @@ export const userSchema = new Schema<User>({
         { type: mongoose.Schema.Types.ObjectId, ref: 'PrimaryFeed' },
     ],
     secondPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'SecondFeed' }],
-    notifications: [
-        {
-            message: { type: String, required: true },
-            date: { type: Date, default: Date.now }
-        }
-    ]
 })
