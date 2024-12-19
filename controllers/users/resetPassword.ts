@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import crypto from 'crypto';
 import { Request, Response } from 'express';
 import { userModel } from '../../models/users';
 
@@ -23,16 +22,8 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
             return;
         }
 
-        // Gera um token único para redefinição de senha
-        const token = crypto.randomBytes(32).toString('hex');
-
-        // Atualiza o modelo do usuário com o token e prazo de validade
-        user.resetPasswordToken = token;
-        user.resetPasswordExpires = Date.now() + 3600000; // Token válido por 1 hora
-        await user.save();
-
-        // Link para a página de redefinição de senha
-        const resetLink = `https://nakedlove.eu/reset-password`; // Página fixa para o frontend
+        // Link fixo para a página de redefinição de senha
+        const resetLink = `https://nakedlove.eu/reset-password`;
 
         // Configuração do e-mail
         const mailOptions = {
