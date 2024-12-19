@@ -38,8 +38,8 @@ export type User = {
     stripeCustomerId: string
     stripeSubscriptionId: string
     stripeSubscriptionStatus: StripeSubscriptionStatus | null
-    resetPasswordToken: String
-    resetPasswordExpires: Number
+    resetPasswordToken: string | null
+    resetPasswordExpires: number | null
     likes: ObjectId[]
     matches: ObjectId[]
     followers: ObjectId[]

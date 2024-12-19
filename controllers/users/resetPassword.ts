@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer'
 import crypto from 'crypto'
 import { Request, Response } from 'express'
+import bcrypt from 'bcrypt'
 import { userModel } from '../../models/users'
 
 const transporter = nodemailer.createTransport({
@@ -50,5 +51,53 @@ export const forgotPassword = async (
         })
     } catch (err) {
         res.status(500).json({ message: 'Erro no servidor.' })
+    }
+}
+
+export const resetPassword = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    const { token, password }: { token: string; password: string } = req.body
+
+    try {
+        const user = await userModel.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() },
+        })
+
+        if (!user) {
+            res.status(400).json({ message: 'Token inválido ou expirado.' })
+            return
+        }
+        if (!password || password.length < 6) {
+            res.status(400).json({
+                message: 'A nova senha deve ter pelo menos 6 caracteres.',
+            })
+            return
+        }
+
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        user.password = hashedPassword
+        user.resetPasswordToken = null
+        user.resetPasswordExpires = null
+
+        await user.save()
+
+        res.json({ message: 'Senha redefinida com sucesso!' })
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            res.status(500).json({
+                message: 'Erro no servidor.',
+                error: err.message,
+            })
+        } else {
+            res.status(500).json({
+                message: 'Erro no servidor.',
+                error: 'Erro desconhecido.',
+            })
+        }
     }
 }
