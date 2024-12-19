@@ -7,10 +7,7 @@ import { updateUser } from '../controllers/users/updateUser'
 import { uploadSingle } from '../middleware/upload'
 import { getUserProfile } from '../controllers/users/getUserProfile'
 import { likeUser } from '../controllers/users/likeUser'
-import {
-    getUsersWhoLikedPost,
-    getUsersWhoLikedProfile,
-} from '../controllers/users/getUsersWhoLiked'
+import {getUsersWhoLikedPost,getUsersWhoLikedProfile,} from '../controllers/users/getUsersWhoLiked'
 import { checkMutualLike } from '../controllers/users/checkmatch'
 import { sendMessage } from '../controllers/chat/getMessage'
 import {

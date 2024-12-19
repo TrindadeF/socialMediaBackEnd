@@ -39,6 +39,7 @@ export const userSchema = new Schema<User>({
     resetPasswordToken: { type: String, default: null },
     resetPasswordExpires: { type: Number, default: null },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    
     matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
