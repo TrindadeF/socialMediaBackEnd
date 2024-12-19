@@ -6,10 +6,7 @@ import stripeRoute from './stripe'
 import stripeWebHook from './stripeWebHook'
 import primaryFeed from './primaryFeed'
 import secondFeed from './secondFeed'
-import {
-    forgotPassword,
-    resetPassword,
-} from '../controllers/users/resetPassword'
+import {forgotPassword, resetPassword,} from '../controllers/users/resetPassword'
 import { getAllUsersWithPosts } from '../controllers/users/getAllusers'
 import { getUserProfile } from '../controllers/users/getUserProfile'
 import { syncSubscriptionStatus } from '../controllers/stripe/syncSubscription'
