@@ -78,6 +78,7 @@ export type Chat = {
     lastMessage: Message | null
     createdAt: Date
     updatedAt: Date
+    isAnonymous?: boolean
 }
 
 type Gender = 'M' | 'F' | 'NB' | 'BI' | 'TR' | 'HOM'
