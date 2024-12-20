@@ -6,6 +6,7 @@ export const corsOptions: CorsOptions = {
         'http://www.nakedlove.eu',
         'https://nakedlove.eu',
         'https://www.nakedlove.eu',
+        'htttp://locahost::4200',
     ],
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     credentials: true,
