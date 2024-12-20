@@ -4,15 +4,9 @@ import { messageSchema } from './message'
 export const chatSchema = new mongoose.Schema({
     participants: [
         {
-            userId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-                required: true,
-            },
-            isAnonymous: {
-                type: Boolean,
-                default: false, // Define o anonimato como false por padrão
-            },
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
         },
     ],
     messages: [messageSchema],
@@ -28,4 +22,3 @@ export const chatSchema = new mongoose.Schema({
     senderNickName: { type: String, default: '' },
     receiverNickName: { type: String, default: '' },
 })
-
