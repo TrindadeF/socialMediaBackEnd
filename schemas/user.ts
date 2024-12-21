@@ -1,28 +1,30 @@
-import mongoose, { Schema } from 'mongoose'
-import { User } from '../database'
+import mongoose, { Schema } from 'mongoose';
+import { User } from '../database'; // Certifique-se de que este caminho está correto
 
 export const userSchema = new Schema<User>({
-    name: { type: 'String', required: true },
-    age: { type: 'Number', required: true },
-    profilePic: { type: 'String', default: 'default' },
+    name: { type: String, required: true },
+    age: { type: Number, required: true },
+    profilePic: { type: String, default: 'default' },
     media: { type: [String], default: [] },
-
-    gender: { type: 'String', enum: ['M', 'F', 'NB', 'BI', 'TR', 'HOM'] },
+    gender: {
+        type: String,
+        enum: ['M', 'F', 'NB', 'BI', 'TR', 'HOM'],
+    },
     email: {
-        type: 'String',
+        type: String,
         required: true,
         unique: true,
         lowercase: true,
         trim: true,
         match: [
             /^[a-z0-9.]+@[a-z0-9]+.[a-z]+.([a-z]+)?$/i,
-            'please, use valid email ',
+            'Please, use a valid email.',
         ],
     },
-    password: { type: 'string', required: true },
-    confirmpassword: { type: 'string' },
-    nickName: { type: 'string' },
-    description: { type: 'string' },
+    password: { type: String, required: true },
+    confirmpassword: { type: String },
+    nickName: { type: String },
+    description: { type: String },
     stripeSubscriptionStatus: {
         type: String,
         enum: [
@@ -39,7 +41,6 @@ export const userSchema = new Schema<User>({
     resetPasswordToken: { type: String, default: null },
     resetPasswordExpires: { type: Number, default: null },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    
     matches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -47,7 +48,7 @@ export const userSchema = new Schema<User>({
     blockedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     reports: [
         {
-            reportedBy: { type: mongoose.Types.ObjectId, ref: 'User' },
+            reportedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
             reason: { type: String, required: true },
             createdAt: { type: Date, default: Date.now },
         },
@@ -56,4 +57,7 @@ export const userSchema = new Schema<User>({
         { type: mongoose.Schema.Types.ObjectId, ref: 'PrimaryFeed' },
     ],
     secondPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'SecondFeed' }],
-})
+});
+
+// Cria e exporta o modelo do Mongoose
+export const userModel = mongoose.model<User>('User', userSchema);

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
-import { userModel } from '../../models/users'
+import { userModel} from '../../models/users'
 
 export const followUser = async (
     req: Request,
@@ -23,6 +23,7 @@ export const followUser = async (
         )
 
         if (isFollowing) {
+            // Deixar de seguir
             currentUser.following = currentUser.following.filter(
                 (id) => id.toString() !== targetUserId
             )
@@ -35,6 +36,7 @@ export const followUser = async (
                 message: 'Você deixou de seguir este usuário',
             })
         } else {
+            // Começar a seguir
             currentUser.following.push(
                 new mongoose.Types.ObjectId(targetUserId) as any
             )
@@ -43,8 +45,18 @@ export const followUser = async (
             )
             await currentUser.save()
             await targetUser.save()
+
+            // Enviar notificação para o usuário seguido
+            const notification = {
+                message: `${currentUser.name} começou a te seguir!`,
+                followerId: currentUser._id,
+                followerName: currentUser.name,
+                followerProfilePic: currentUser.profilePic,
+            }
+
             res.status(200).json({
                 message: 'Você agora está seguindo este usuário',
+                notification, // Incluindo a notificação como parte da resposta
             })
         }
     } catch (error) {
