@@ -7,7 +7,10 @@ import { updateUser } from '../controllers/users/updateUser'
 import { uploadSingle } from '../middleware/upload'
 import { getUserProfile } from '../controllers/users/getUserProfile'
 import { likeUser } from '../controllers/users/likeUser'
-import {getUsersWhoLikedPost,getUsersWhoLikedProfile,} from '../controllers/users/getUsersWhoLiked'
+import {
+    getUsersWhoLikedPost,
+    getUsersWhoLikedProfile,
+} from '../controllers/users/getUsersWhoLiked'
 import { checkMutualLike } from '../controllers/users/checkmatch'
 import { sendMessage } from '../controllers/chat/getMessage'
 import {
@@ -17,11 +20,10 @@ import {
 import { deletePost } from '../controllers/secondFeed/deletePosts'
 import { deletePostP } from '../controllers/primaryFeed/deletePosts'
 import { followUser } from '../controllers/users/followUser'
-import { isFollowing } from '../controllers/users/isFollowing'
+import { getNewFollowers, isFollowing } from '../controllers/users/isFollowing'
 import { getOrCreateChatByParticipants } from '../controllers/chat/getChat'
 import { reportUser } from '../controllers/users/reportUser'
-import { blockUser,unblockUser } from '../controllers/users/blockUser'
-
+import { blockUser, unblockUser } from '../controllers/users/blockUser'
 
 const router = Router()
 
@@ -42,6 +44,7 @@ router.get('/chats', authBody, getChatsByUserId)
 router.post('/chats', authBody, getOrCreateChatByParticipants)
 router.post('/profile/:targetUserId/follow', authBody, followUser)
 router.get('/profile/:userId/isFollowing/:targetUserId', isFollowing)
+router.get('/new-followers/:userId', getNewFollowers)
 router.post('/report', authBody, reportUser)
 router.post('/block/:blockUserId', authBody, blockUser)
 router.post('/unblock/:unblockUserId', authBody, unblockUser)

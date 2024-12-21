@@ -54,6 +54,8 @@ export type User = {
     }[]
     primaryPosts: ObjectId[]
     secondPosts: ObjectId[]
+    createdAt?: Date
+    updatedAt?: Date
 }
 
 export type Message = {
