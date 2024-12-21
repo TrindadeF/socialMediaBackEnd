@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
-import { User } from '../database'
+import { User } from '../database' // Certifique-se de que este caminho está correto
 
 export const userSchema = new Schema<User>(
     {
