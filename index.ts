@@ -28,6 +28,7 @@ mongoose
     })
 
 app.use(cors(corsOptions))
+app.use('/api/stripe-webhook', require('./routes/stripeWebHook').default)
 app.use(helmet())
 app.use(limiter)
 app.use(express.json())
