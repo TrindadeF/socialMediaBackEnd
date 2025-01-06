@@ -14,6 +14,7 @@ import { getNotifications } from '../controllers/users/getNotifications'
 import { getUserProfile } from '../controllers/users/getUserProfile'
 import { syncSubscriptionStatus } from '../controllers/stripe/syncSubscription'
 import { cancelSubscription } from '../controllers/stripe/cancelSubscription'
+import { getAllUsersWithPosts } from '../controllers/users/getAllUsers'
 
 const router = Router()
 
@@ -27,6 +28,7 @@ router.use('/api/secondFeed', secondFeed)
 router.post('/api/reset-password', forgotPassword)
 router.post('/api/reset-password/:token', resetPassword)
 router.get('/api/notifications/:userId', getNotifications)
+router.get('/api/users', getAllUsersWithPosts)
 router.get('/api/users/:id', getUserProfile)
 router.post('/api/admin/sync-subscrition-status', syncSubscriptionStatus)
 router.delete('/api/cancel-subscription/:userId', cancelSubscription)
