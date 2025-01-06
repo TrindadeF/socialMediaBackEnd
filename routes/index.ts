@@ -10,7 +10,7 @@ import {
     forgotPassword,
     resetPassword,
 } from '../controllers/users/resetPassword'
-import { getNotifications } from '../controllers/users/getAllusers'
+import { getNotifications } from '../controllers/users/getNotifications'
 import { getUserProfile } from '../controllers/users/getUserProfile'
 import { syncSubscriptionStatus } from '../controllers/stripe/syncSubscription'
 import { cancelSubscription } from '../controllers/stripe/cancelSubscription'
