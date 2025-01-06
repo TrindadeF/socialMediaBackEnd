@@ -16,6 +16,7 @@ export const getNotifications = async (
         }
 
         const primaryPosts = await primaryFeed.find({ owner: userId }).lean()
+
         const likesOnPrimaryPosts = await Promise.all(
             primaryPosts.map(async (post) => {
                 const usersWhoLiked = await userModel
@@ -31,6 +32,7 @@ export const getNotifications = async (
         )
 
         const secondPosts = await secondFeed.find({ owner: userId }).lean()
+
         const likesOnSecondPosts = await Promise.all(
             secondPosts.map(async (post) => {
                 const usersWhoLiked = await userModel
