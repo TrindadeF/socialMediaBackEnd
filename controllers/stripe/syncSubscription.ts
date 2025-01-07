@@ -26,8 +26,6 @@ export const syncSubscriptionStatus = async () => {
                 )
             }
         }
-
-        console.log('Sincronização de status de assinatura concluída.')
     } catch (error) {
         console.error('Erro ao sincronizar status de assinatura:', error)
     }

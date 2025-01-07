@@ -24,6 +24,7 @@ import { getNewFollowers, isFollowing } from '../controllers/users/isFollowing'
 import { getOrCreateChatByParticipants } from '../controllers/chat/getChat'
 import { reportUser } from '../controllers/users/reportUser'
 import { blockUser, unblockUser } from '../controllers/users/blockUser'
+import { sendNotifications } from '../controllers/users/webPushController'
 
 const router = Router()
 
@@ -48,5 +49,6 @@ router.get('/new-followers/:userId', getNewFollowers)
 router.post('/report', authBody, reportUser)
 router.post('/block/:blockUserId', authBody, blockUser)
 router.post('/unblock/:unblockUserId', authBody, unblockUser)
+router.post('/send-notifications', sendNotifications)
 
 export default router
