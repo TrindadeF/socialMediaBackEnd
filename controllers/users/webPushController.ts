@@ -35,11 +35,7 @@ export const sendNotifications = async (
         const subscriptions = await SubscriptionModel.find()
 
         for (const subscription of subscriptions) {
-            if (
-                subscription.keys &&
-                subscription.keys.p256dh &&
-                subscription.keys.auth
-            ) {
+            if (subscription.keys?.p256dh && subscription.keys?.auth) {
                 const pushSubscription: PushSubscription = {
                     endpoint: subscription.endpoint,
                     keys: {
