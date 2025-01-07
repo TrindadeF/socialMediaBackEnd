@@ -29,6 +29,7 @@ exports.userSchema = new mongoose_1.Schema({
     name: { type: 'String', required: true },
     age: { type: 'Number', required: true },
     profilePic: { type: 'String', default: 'default' },
+    media: { type: [String], default: [] },
     gender: { type: 'String', enum: ['M', 'F', 'NB', 'BI', 'TR', 'HOM'] },
     email: {
         type: 'String',
@@ -58,10 +59,27 @@ exports.userSchema = new mongoose_1.Schema({
         default: null,
     },
     stripeCustomerId: { type: String, default: null },
-    resetPasswordToken: { type: String },
-    resetPasswordExpires: { type: Number },
+    resetPasswordToken: { type: String, default: null },
+    resetPasswordExpires: { type: Number, default: null },
     likes: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User' }],
     matches: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User' }],
     followers: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User' }],
+    isAnonymous: { type: Boolean, default: false },
+    blockedUsers: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User' }],
+    reports: [
+        {
+            reportedBy: { type: mongoose_1.default.Types.ObjectId, ref: 'User' },
+            reason: { type: String, required: true },
+            createdAt: { type: Date, default: Date.now },
+        },
+    ],
+    primaryPosts: [
+        { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'PrimaryFeed' },
+    ],
+    secondPosts: [
+        { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'SecondFeed' },
+    ],
+}, {
+    timestamps: true,
 });

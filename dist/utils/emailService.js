@@ -16,10 +16,10 @@ const sendWelcomeEmail = (userEmail) => {
     const mailOptions = {
         from: 'nakedlove@example.com',
         to: userEmail,
-        subject: 'Bem-vindo ao Naked Love!',
+        subject: 'Welcome to Naked Love!',
         html: `
-      <p>Bem-vindo ao Naked Love, onde as conexões são autênticas e o amor é descoberto sem filtros. Explora uma nova forma de encontrar a tua alma gémea, despida de superficialidades. O amor verdadeiro começa aqui!</p>
-      <p>Este site é destinado exclusivamente a maiores de 18 anos. Ao continuar, confirmas que tens idade legal para explorar conteúdos voltados para um público adulto.</p>
+      <p>Welcome to Naked Love, where connections are authentic and love is discovered without filters. Explore a new way to find your soulmate, stripped of superficiality. True love starts here!</p>
+      <p>This site is intended exclusively for those over 18 years of age. By continuing, you confirm that you are of legal age to explore content intended for an adult audience.</p>
     `,
     };
     transporter.sendMail(mailOptions, (error, info) => {

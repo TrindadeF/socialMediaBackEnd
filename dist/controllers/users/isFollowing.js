@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isFollowing = void 0;
+exports.getNewFollowers = exports.isFollowing = void 0;
 const users_1 = require("../../models/users");
 const isFollowing = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -29,3 +29,27 @@ const isFollowing = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.isFollowing = isFollowing;
+const getNewFollowers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        const user = yield users_1.userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+        const newFollowers = yield users_1.userModel.find({
+            following: userId,
+        });
+        const followersData = newFollowers.map((follower) => ({
+            id: follower._id,
+            name: follower.name,
+            profilePic: follower.profilePic || 'default-avatar.jpg',
+            followedAt: follower.updatedAt,
+        }));
+        res.json(followersData);
+    }
+    catch (error) {
+        console.error('Erro ao obter novos seguidores:', error);
+        res.status(500).json({ message: 'Erro ao obter novos seguidores' });
+    }
+});
+exports.getNewFollowers = getNewFollowers;

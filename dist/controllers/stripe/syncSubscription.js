@@ -28,7 +28,6 @@ const syncSubscriptionStatus = () => __awaiter(void 0, void 0, void 0, function*
                 console.error(`Erro ao obter status da assinatura para o usuário ${user._id}:`, error);
             }
         }
-        console.log('Sincronização de status de assinatura concluída.');
     }
     catch (error) {
         console.error('Erro ao sincronizar status de assinatura:', error);

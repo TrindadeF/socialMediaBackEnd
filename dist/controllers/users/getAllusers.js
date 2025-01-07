@@ -8,16 +8,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllUsers = void 0;
+exports.getAllUsersWithPosts = void 0;
 const users_1 = require("../../models/users");
-const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const primaryFeed_1 = __importDefault(require("../../models/primaryFeed"));
+const secondFeed_1 = __importDefault(require("../../models/secondFeed"));
+const getAllUsersWithPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield users_1.userModel.find();
-        res.status(200).json(users);
+        const users = yield users_1.userModel.find().lean();
+        const usersWithPosts = yield Promise.all(users.map((user) => __awaiter(void 0, void 0, void 0, function* () {
+            const primaryPosts = yield primaryFeed_1.default
+                .find({ owner: user._id })
+                .lean();
+            const secondPosts = yield secondFeed_1.default
+                .find({ owner: user._id })
+                .lean();
+            return Object.assign(Object.assign({}, user), { primaryPosts,
+                secondPosts });
+        })));
+        res.status(200).json(usersWithPosts);
     }
     catch (error) {
-        res.status(500).json({ message: 'Erro ao buscar usuários', error });
+        res.status(500).json({
+            message: 'Erro ao buscar usuários e posts',
+            error,
+        });
     }
 });
-exports.getAllUsers = getAllUsers;
+exports.getAllUsersWithPosts = getAllUsersWithPosts;

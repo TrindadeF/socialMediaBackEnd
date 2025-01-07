@@ -18,28 +18,53 @@ const getPostsByUserId = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const userId = req.query.userId;
         const filter = userId ? { owner: userId } : {};
+        console.log('Filtro aplicado:', filter);
         const posts = yield secondFeed_1.default
             .find(filter)
-            .populate('owner', 'nickName profilePic')
-            .populate('comments.owner', 'nickName')
+            .populate({
+            path: 'owner',
+            select: 'nickName profilePic _id',
+            match: { nickName: { $exists: true } },
+        })
+            .populate('comments.owner', '_id nickName')
             .exec();
-        const postsWithLikes = posts.map((post) => {
+        console.log('Posts encontrados (direto do banco):', posts);
+        const postsWithDetails = posts.map((post) => {
+            if (!post.owner) {
+                throw new Error(`Owner não encontrado para o post ${post._id}`);
+            }
             const owner = post.owner;
             return {
                 _id: post._id,
-                ownerName: owner.nickName,
-                ownerProfileImageUrl: owner.profilePic,
+                owner: {
+                    _id: owner._id,
+                    nickName: owner.nickName,
+                    profilePic: owner.profilePic,
+                },
                 content: post.content,
                 createdAt: post.createdAt,
                 media: post.media,
-                likes: post.likes.length,
+                likesCount: Array.isArray(post.likes) ? post.likes.length : 0,
+                comments: post.comments.map((comment) => ({
+                    _id: comment._id,
+                    text: comment.text,
+                    owner: comment.owner
+                        ? {
+                            _id: comment.owner._id,
+                            nickName: comment.owner.nickName,
+                        }
+                        : null,
+                })),
             };
         });
-        return res.status(200).json(postsWithLikes);
+        console.log('Resposta formatada:', postsWithDetails);
+        return res.status(200).json(postsWithDetails);
     }
     catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Erro ao buscar posts' });
+        console.error('Erro ao buscar posts:', error.message);
+        return res
+            .status(500)
+            .json({ error: 'Erro ao buscar posts', details: error.message });
     }
 });
 exports.getPostsByUserId = getPostsByUserId;

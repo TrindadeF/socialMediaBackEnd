@@ -17,19 +17,23 @@ const secondFeed_1 = __importDefault(require("../../models/secondFeed"));
 const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.query.userId;
-        let filter = {};
-        if (userId) {
-            filter = { owner: userId };
-        }
+        const filter = userId ? { owner: userId } : {};
         const posts = yield secondFeed_1.default.find(filter)
-            .populate('owner', 'nickName profilePic')
+            .populate({
+            path: 'owner',
+            select: 'nickName profilePic _id',
+            match: { nickName: { $exists: true } },
+        })
             .exec();
         const postsWithLikes = posts.map((post) => {
             const owner = post.owner;
             return {
                 _id: post._id,
-                ownerName: owner.nickName,
-                ownerProfileImageUrl: owner.profilePic,
+                owner: {
+                    _id: owner._id.toString(),
+                    nickName: owner.nickName,
+                    profilePic: owner.profilePic,
+                },
                 content: post.content,
                 createdAt: post.createdAt,
                 media: post.media,
@@ -39,8 +43,11 @@ const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(200).json(postsWithLikes);
     }
     catch (error) {
-        console.error(error);
-        return res.status(400).json({ error: 'Erro ao buscar posts' });
+        console.error('Erro ao buscar posts:', error.message || error);
+        return res.status(400).json({
+            error: 'Erro ao buscar posts',
+            details: error.message || null,
+        });
     }
 });
 exports.getPosts = getPosts;

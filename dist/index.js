@@ -30,6 +30,7 @@ mongoose_1.default
     console.error('MongoDB connection error:', err);
 });
 app.use((0, cors_1.default)(cors_2.corsOptions));
+app.use('/api/stripe-webhook', require('./routes/stripeWebHook').default);
 app.use((0, helmet_1.default)());
 app.use(limiter_1.limiter);
 app.use(express_1.default.json());

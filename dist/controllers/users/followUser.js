@@ -28,6 +28,7 @@ const followUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         const isFollowing = currentUser.following.some((id) => id.toString() === targetUserId);
         if (isFollowing) {
+            // Deixar de seguir
             currentUser.following = currentUser.following.filter((id) => id.toString() !== targetUserId);
             targetUser.followers = targetUser.followers.filter((id) => id.toString() !== currentUserId);
             yield currentUser.save();
@@ -37,12 +38,21 @@ const followUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             });
         }
         else {
+            // Começar a seguir
             currentUser.following.push(new mongoose_1.default.Types.ObjectId(targetUserId));
             targetUser.followers.push(new mongoose_1.default.Types.ObjectId(currentUserId));
             yield currentUser.save();
             yield targetUser.save();
+            // Enviar notificação para o usuário seguido
+            const notification = {
+                message: `${currentUser.name} começou a te seguir!`,
+                followerId: currentUser._id,
+                followerName: currentUser.name,
+                followerProfilePic: currentUser.profilePic,
+            };
             res.status(200).json({
                 message: 'Você agora está seguindo este usuário',
+                notification, // Incluindo a notificação como parte da resposta
             });
         }
     }

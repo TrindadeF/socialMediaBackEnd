@@ -14,19 +14,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPosts = void 0;
 const primaryFeed_1 = __importDefault(require("../../models/primaryFeed"));
+const users_1 = require("../../models/users");
 const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const userId = req.user;
+        const user = yield users_1.userModel
+            .findById(userId)
+            .select('blockedUsers')
+            .exec();
+        const blockedUsers = (user === null || user === void 0 ? void 0 : user.blockedUsers) || [];
         const posts = yield primaryFeed_1.default.find()
             .populate({
             path: 'owner',
             select: 'nickName profilePic',
-            match: { nickName: { $exists: true } },
+            match: {
+                _id: { $nin: blockedUsers },
+                nickName: { $exists: true },
+            },
         })
             .populate({
             path: 'comments',
             populate: {
                 path: 'owner',
                 select: 'nickName profilePic',
+                match: { _id: { $nin: blockedUsers } },
             },
         })
             .exec();
@@ -34,7 +45,9 @@ const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             .filter((post) => post.owner && typeof post.owner !== 'string')
             .map((post) => {
             const owner = post.owner;
-            const formattedComments = post.comments.map((comment) => {
+            const formattedComments = (post.comments || [])
+                .filter((comment) => comment.owner)
+                .map((comment) => {
                 const commentOwner = comment.owner;
                 return {
                     _id: comment._id,
@@ -61,7 +74,7 @@ const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(200).json(postsWithComments);
     }
     catch (error) {
-        console.error(error);
+        console.error('Error fetching posts:', error);
         return res.status(400).json({ error: 'Erro ao buscar posts' });
     }
 });

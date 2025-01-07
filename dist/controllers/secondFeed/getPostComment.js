@@ -27,7 +27,7 @@ const getPostComments = (req, res) => __awaiter(void 0, void 0, void 0, function
             .findById(postObjectId)
             .populate({
             path: 'owner',
-            select: 'nickName _id',
+            select: '_id nickName',
         })
             .populate('comments');
         if (!post) {

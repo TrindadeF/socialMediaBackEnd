@@ -15,7 +15,7 @@ const getPostComment_1 = require("../controllers/secondFeed/getPostComment");
 const deleteComments_1 = require("../controllers/secondFeed/deleteComments");
 const router = (0, express_1.Router)();
 router.get('/', getPosts_1.getPosts);
-router.delete('/:id', authBody_1.authBody, deletePosts_1.deletePost);
+router.delete('/:postid', authBody_1.authBody, deletePosts_1.deletePost);
 router.post('/', authBody_1.authBody, upload_1.uploadSingle, createPost_1.createPost);
 router.put('/:id', validBody_1.validBody);
 router.post('/:postId/like', authBody_1.authBody, likePosts_1.likePost);
